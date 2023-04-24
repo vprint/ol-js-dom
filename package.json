@@ -1,0 +1,17 @@
+{
+  "name": "ol-js-dom",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "vite",
+    "build": "vite build",
+    "serve": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^4.0.4"
+  },
+  "dependencies": {
+    "font-gis": "^1.0.5",
+    "ol": "^7.3.0",
+    "ol-side-panel": "^1.0.6"
+  }
+}

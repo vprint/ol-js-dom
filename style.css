@@ -1,0 +1,30 @@
+@import "node_modules/ol/ol.css";
+
+html, body {
+  margin: 0;
+  height: 100%;
+}
+#map {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+.ol-side-panel-tabs, .ol-side-panel-tabs > button, .ol-side-panel-tabs > button.active, .ol-control button {
+  color: #8A1946;
+  background-color: #f9f6ed;
+}
+
+.ol-side-panel-tabs > button:hover, .ol-control button:hover, .ol-control button:active  {
+  color:#f9f6ed;
+  background-color: #8A1946;
+}
+
+.ol-side-panel-content {
+  background-color:#f9f6ed ;
+}
+
+.ol-side-panel-close:hover {
+  color: #8A1946;
+}
