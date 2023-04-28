@@ -12,6 +12,7 @@
   "dependencies": {
     "font-gis": "^1.0.5",
     "ol": "^7.3.0",
+    "ol-ext": "^4.0.7",
     "ol-side-panel": "^1.0.6"
   }
 }

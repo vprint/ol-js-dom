@@ -1,9 +1,12 @@
 import './style.css';
+import 'ol-ext/dist/ol-ext.min.css';
 import {Map, View} from 'ol';
 import TileLayer from 'ol/layer/Tile';
 import OSM from 'ol/source/OSM';
 import { SidePanel } from 'ol-side-panel';
-import EditBar from './widget/EditBar'
+import EditBar from './widget/Edition/EditBar';
+
+//import Button from 'ol-ext/control/Button'
 
 const map = new Map({
   target: 'map',
@@ -29,9 +32,8 @@ const layersPane = sidePanel.definePane({
   icon: 'Y'
 });
 
-console.log(map.getView())
 new EditBar({
-  target: sidePanel.getPaneById('layers').element_.id,
+  target: document.getElementById(sidePanel.getPaneById('layers').element_.id),
   map: map
 });
 
