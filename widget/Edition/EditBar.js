@@ -1,35 +1,99 @@
 import AddCustomElement from '../miscellaneous/AddCustomElement';
-import Bar from 'ol-ext/control/Bar'
-import '../../node_modules/font-gis/css/font-gis.css'
-import Control from 'ol/control/Control';
 
 /**
  * @module widget/EditBar
  */
 
 class EditBar {
-  constructor({target, map}) {
-    let editionBar = new Bar ({
-      target: target
+  constructor(target) {
+    // Creation de la toolbar générale
+    this.Toolbar = AddCustomElement.CreateToolbar({
+      nb_groups: 3
     })
-    editionBar.addControl (new Rotate());
 
+    // Bouton de sélection
+    this.SelectButton = AddCustomElement.AddCustomButton({
+      id: 'S1',
+      target: this.Toolbar.childNodes[0], 
+      title: 'Select', 
+      icon: 'fg-arrow-o', 
+      isActive : true
+    })
 
-    /*
-    console.log(target);
-    let temp = document.getElementById(target)
-    let temp2 = document.createElement("div")
-    temp.appendChild(temp2)
-    console.log(temp2)
-    //.createElement("div");
-    this.group = AddCustomElement.AddCustomGroupButton("btn-group", "toolbar", "EditionBar1", "Barre d'édition", temp2);
-    AddCustomElement.AddCustomButton("button", "bouton1", "bouton1", '<i class="fg-regular-shape-pt"></i>', this.group, true);
-    AddCustomElement.AddCustomButton("button", "bouton2", "bouton2", '<i class="fg-regular-shape-pt"></i>', this.group, true)
+    // Bouton de création
+    this.CreateButton = AddCustomElement.AddCustomButton({
+      id: 'C2',
+      target: this.Toolbar.childNodes[0], 
+      title: 'Create', 
+      icon: 'fg-regular-shape-pt', 
+      isActive : true
+    })
 
-    this.group2 = AddCustomElement.AddCustomGroupButton("btn-group", "toolbar", "EditionBar1", "Barre d'édition", temp2);
-    AddCustomElement.AddCustomButton("button", "bouton3", "bouton3", '<i class="fg-regular-shape-pt"></i>', this.group2, true);
-    AddCustomElement.AddCustomButton("button", "bouton4", "bouton4", '<i class="fg-regular-shape-pt"></i>', this.group2, true)
-    */
+    // Bouton de deselection des géométries
+    AddCustomElement.AddCustomButton({
+      id: 'R3',
+      target: this.Toolbar.childNodes[1], 
+      title: 'Remove', 
+      icon: 'far fa-trash-alt', 
+      isActive : false
+    })
+
+    // Bouton de modification des géométries séléctionnées
+    AddCustomElement.AddCustomButton({
+      id: 'M4',
+      target: this.Toolbar.childNodes[1], 
+      title: 'Edit', 
+      icon: 'fas fa-pen', 
+      isActive : false
+    })
+
+    // Bouton de zoom sur les géométries séléctionnées
+    AddCustomElement.AddCustomButton({
+      id: 'Z5',
+      target: this.Toolbar.childNodes[1], 
+      title: 'Zoom to selection', 
+      icon: 'fg-map-search', 
+      isActive : false
+    })
+
+    // Bouton retour arrière
+    AddCustomElement.AddCustomButton({
+      id: 'U6',
+      target: this.Toolbar.childNodes[2], 
+      title: 'Undo', 
+      icon: 'fas fa-undo', 
+      isActive : false
+    })
+
+    // Bouton enregistrer
+    AddCustomElement.AddCustomButton({
+      id: 'S7',
+      target: this.Toolbar.childNodes[2], 
+      title: 'Save', 
+      icon: 'far fa-save', 
+      isActive : false
+    })
+
+    // Bouton supprimer
+    AddCustomElement.AddCustomButton({
+      id: 'D8',
+      target: this.Toolbar.childNodes[2], 
+      title: 'Delete', 
+      icon: 'fas fa-times', 
+      isActive : false
+    })
+
+    // Bouton Cancel Edit
+    AddCustomElement.AddCustomButton({
+      id: 'C9',
+      target: this.Toolbar.childNodes[2], 
+      title: 'Cancel', 
+      icon: 'icss-edit-off', 
+      isActive : false
+    })
+
+    
+    target.addWidgetElement(this.Toolbar)
   };
 }
 

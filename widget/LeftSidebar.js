@@ -1,4 +1,5 @@
 import { SidePanel } from 'ol-side-panel';
+import EditBar from './Edition/EditBar';
 
 /**
  * @module widget
@@ -18,6 +19,8 @@ class LeftSidebar {
       name: "Layers",
       icon: 'Y'
     });
+
+    new EditBar(this.layersPane)
   }
 }
 
