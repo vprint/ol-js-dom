@@ -1,8 +1,6 @@
 import '@fortawesome/fontawesome-free/css/all.css';
-import 'bootstrap/dist/css/bootstrap.css';
 import 'font-gis/css/font-gis.css'
 import 'iconicss/dist/iconicss.css'
-import 'bootstrap';
 
 
 class AddCustomElement {
