@@ -1,10 +1,10 @@
 :root,
 :host {
-  --ol-background-color: white;
+  --ol-background-color: #8A1946;
   --ol-accent-background-color: #F5F5F5;
   --ol-subtle-background-color: #f9f6ed;
   --ol-partial-background-color: rgba(255, 255, 255, 0.75);
-  --ol-foreground-color: #8A1946;
+  --ol-foreground-color: #f9f6ed;
   --ol-subtle-foreground-color: #f9f6ed;
   --ol-brand-color: #00AAFF;
 }
@@ -175,8 +175,8 @@
   text-align: center;
   line-height: 1.5;
   background-color: var(--ol-background-color);
-  border: 1px solid transparent;
-  border-radius: 2px;
+  border: 2px solid transparent;
+  border-radius: 0px;
   user-select: none;
 }
 
