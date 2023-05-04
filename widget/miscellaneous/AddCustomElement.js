@@ -26,7 +26,7 @@ class AddCustomElement {
 
     static AddCustomButton({id, target, title, icon, isActive}) {
         let el = document.createElement('button');
-        el.className = 'btn btn-primary';
+        el.className = 'btn';
         el.id = id;
         el.title = title;
         el.innerHTML = `<i class="${icon}"</i>`;

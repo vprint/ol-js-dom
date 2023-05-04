@@ -164,6 +164,7 @@
   top: .5em;
 }
 
+
 .ol-control button {
   display: block;
   margin: 0px;
@@ -205,10 +206,11 @@
 
 .ol-control button:hover,
 .ol-control button:focus {
-  text-decoration: none;
-  outline: 1px solid var(--ol-subtle-foreground-color);
-  color: var(--ol-foreground-color);
+  background-color: #f9f6ed;
+  color: #8A1946;
+  border-color: #8A1946;
 }
+
 
 .ol-zoom .ol-zoom-in {
   border-radius: 2px 2px 0 0;

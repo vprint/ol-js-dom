@@ -32,12 +32,6 @@ html, body {
   background-color: #8A1946 !important;
 }
 
-.ol-control button:hover {
-  background-color: #f9f6ed;
-  color: #8A1946;
-  border: 2px solid #8A1946;
-}
-
 .ol-side-panel-tabs, .ol-side-panel-tabs > button {
   color: #8A1946;
   background-color: #f9f6ed;
@@ -55,5 +49,3 @@ html, body {
 .ol-side-panel-close:hover {
   color: #8A1946;
 }
-
-/* #ded8c8 */
