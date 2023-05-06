@@ -1,5 +1,8 @@
 :root,
 :host {
+  --asm-dark1: #8A1946;
+  --asm-light1: #f9f6ed;
+  --asm-font1: #666666;
   --ol-background-color: #8A1946;
   --ol-accent-background-color: #F5F5F5;
   --ol-subtle-background-color: #f9f6ed;
@@ -164,20 +167,18 @@
   top: .5em;
 }
 
-
 .ol-control button {
   display: block;
   margin: 0px;
-  padding: 0.375rem 0.75rem;
-  color: var(--ol-subtle-foreground-color);
+  padding: 0.375em 0.75em;
+  color: var(--asm-light1);
   font-weight: 400;
   text-decoration: none;
-  font-size: 1rem;
+  font-size: 1em;
   text-align: center;
   line-height: 1.5;
-  background-color: var(--ol-background-color);
+  background-color: var(--asm-dark1);
   border: 2px solid transparent;
-  border-radius: 0px;
   user-select: none;
 }
 
@@ -211,7 +212,6 @@
   border-color: #8A1946;
 }
 
-
 .ol-zoom .ol-zoom-in {
   border-radius: 2px 2px 0 0;
 }
@@ -231,15 +231,14 @@
 }
 
 .ol-attribution a {
-  color: var(--ol-subtle-foreground-color);
+  color: #666666;
   text-decoration: none;
 }
 
 .ol-attribution ul {
   margin: 0;
   padding: 1px .5em;
-  color: var(--ol-foreground-color);
-  text-shadow: 0 0 2px var(--ol-background-color);
+  color: var(--asm-font1);
   font-size: 12px;
 }
 
