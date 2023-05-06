@@ -34,6 +34,34 @@ class AddCustomElement {
         target.appendChild(el);
         return el;
     };
+    
+    static AddSelect({id, target, values}) {
+        let el = document.createElement('select')
+        el.id = id
+        el.className = 'form-select';
+        console.log(values)
+        for (let i of values) {
+            let option = document.createElement('option')
+            option.value = values.indexOf(i)
+            option.textContent = i
+            el.appendChild(option)
+        }
+        target.appendChild(el)
+    }
+
+    static AddTextArea({id, target, text}) {
+        let el = document.createElement('div');
+        el.id = id;
+        el.className = 'input-group';
+        let span = document.createElement('span');
+        span.className = 'input-group-text';
+        span.textContent = text;
+        let input = document.createElement('textarea');
+        input.className = 'form-control';
+        el.append(span, input);
+        target.appendChild(el)
+        return el;
+    }
 }
 
 export default AddCustomElement;
