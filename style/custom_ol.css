@@ -178,7 +178,7 @@
   text-align: center;
   line-height: 1.5;
   background-color: var(--asm-dark1);
-  border: 2px solid transparent;
+  border: solid 2px transparent;
   user-select: none;
 }
 
@@ -207,9 +207,9 @@
 
 .ol-control button:hover,
 .ol-control button:focus {
-  background-color: #f9f6ed;
-  color: #8A1946;
-  border-color: #8A1946;
+  background-color: var(--asm-light1);
+  color: var(--asm-dark1);
+  border: solid 2px var(--asm-dark1);
 }
 
 .ol-zoom .ol-zoom-in {

@@ -15,24 +15,40 @@ html, body {
 }
 
 .ol-side-panel-tabs > button.active {
-  color: #f9f6ed !important;
-  background-color: #8A1946 !important;
+  color: var(--asm-light1) !important;
+  background-color: var(--asm-dark1) !important;
 }
 
 .ol-side-panel-tabs, .ol-side-panel-tabs > button {
-  color: #8A1946;
-  background-color: #f9f6ed;
+  color: var(--asm-dark1);
+  background-color: var(--asm-light1);
 }
 
 .ol-side-panel-tabs > button:hover {
-  color:#f9f6ed;
-  background-color: #8A1946;
+  color:var(--asm-light1);
+  background-color: var(--asm-dark1);
 }
 
 .ol-side-panel-content {
-  background-color:#f9f6ed ;
+  background-color:var(--asm-light1) ;
 }
 
 .ol-side-panel-close:hover {
-  color: #8A1946;
+  color: var(--asm-dark1);
+}
+
+.no-border-btn {
+  border: solid 0px transparent !important;
+  border-left: solid 2px transparent !important;
+}
+
+.no-border-btn:hover,
+.no-border-btn:focus {
+  border-left: solid 2px var(--asm-dark1) !important;
+}
+
+.edition-container {
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+  border: solid var(--asm-dark1)
 }

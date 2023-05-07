@@ -6,13 +6,13 @@ import 'iconicss/dist/iconicss.css'
 class AddCustomElement {
 
     static CreateToolbar({nb_groups}) {
-        this.Toolbar = document.createElement("div")
-        this.Toolbar.className="btn-toolbar"
-        this.Toolbar.role = "toolbar"
+        let el = document.createElement("div")
+        el.className="btn-toolbar"
+        el.role = "toolbar"
         for (let i=0; i < nb_groups; i++) {
-            this.AddButtonGroup(this.Toolbar, i)
+            this.AddButtonGroup(el, i)
         }
-        return this.Toolbar
+        return el
     }
 
     static AddButtonGroup(target, id) {
@@ -24,13 +24,15 @@ class AddCustomElement {
         return el;
     };
 
-    static AddCustomButton({id, target, title, icon, isActive}) {
+    static AddCustomButton({id, target, title, icon, isActive, customClass, customMargin, customPosition}) {
         let el = document.createElement('button');
-        el.className = 'btn';
         el.id = id;
         el.title = title;
         el.innerHTML = `<i class="${icon}"</i>`;
         el.disabled = !isActive;
+        el.className = customClass === undefined ? '.ol-control button' : customClass;
+        el.style.marginBottom = customMargin === undefined ? 0 : customMargin;
+        el.style.float = customPosition === undefined ? 'left' : customPosition;
         target.appendChild(el);
         return el;
     };
@@ -39,7 +41,6 @@ class AddCustomElement {
         let el = document.createElement('select')
         el.id = id
         el.className = 'form-select';
-        console.log(values)
         for (let i of values) {
             let option = document.createElement('option')
             option.value = values.indexOf(i)

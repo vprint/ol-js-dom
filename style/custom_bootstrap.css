@@ -2,6 +2,8 @@
     position: relative;
     display: inline-flex;
     vertical-align: middle;
+    border: solid 2px var(--asm-dark1);
+    border-left: solid 0px var(--asm-dark1);
 }
 
 .btn:disabled, .btn.disabled, fieldset:disabled .btn {
@@ -19,6 +21,7 @@
     flex-wrap: wrap;
     align-items: stretch;
     width: 100%;
+    margin-bottom: 0.5em;
   }
   .input-group > .form-control,
   .input-group > .form-select,
@@ -128,6 +131,7 @@
     appearance: none;
     border-radius: 0.375rem;
     transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    resize: vertical;
   }
   @media (prefers-reduced-motion: reduce) {
     .form-control {
@@ -143,9 +147,8 @@
   .form-control:focus {
     color: #212529;
     background-color: #fff;
-    border-color: #86b7fe;
+    border: solid 2px var(--asm-dark1);
     outline: 0;
-    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
   }
   .form-control::-webkit-date-and-time-value {
     height: 1.5em;
@@ -392,11 +395,11 @@
     background-position: right 0.75rem center;
     background-size: 16px 12px;
     border: 1px solid #ced4da;
-    border-radius: 0.375rem;
     transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
+    margin-bottom: 0.5em
   }
   @media (prefers-reduced-motion: reduce) {
     .form-select {
@@ -404,9 +407,8 @@
     }
   }
   .form-select:focus {
-    border-color: #86b7fe;
+    border: solid 2px var(--asm-dark1);
     outline: 0;
-    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
   }
   .form-select[multiple], .form-select[size]:not([size="1"]) {
     padding-right: 0.75rem;
