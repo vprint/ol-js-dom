@@ -5,13 +5,14 @@ import 'iconicss/dist/iconicss.css'
 
 class AddCustomElement {
 
-    static CreateToolbar({nb_groups}) {
+    static CreateToolbar({nb_groups, position}) {
         let el = document.createElement("div")
         el.className="btn-toolbar"
         el.role = "toolbar"
         for (let i=0; i < nb_groups; i++) {
             this.AddButtonGroup(el, i)
         }
+        el.style.textAlign = position === undefined ? '' : position
         return el
     }
 
