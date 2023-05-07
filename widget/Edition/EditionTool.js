@@ -20,6 +20,7 @@ class EditionTool {
       icon: 'fg-arrow-o', 
       isActive : true,
       customClass: 'no-border-btn',
+      text: 'Select'
     })
 
     // Bouton de création
@@ -30,11 +31,13 @@ class EditionTool {
       icon: 'fg-regular-shape-pt', 
       isActive : true,
       customClass: 'no-border-btn',
+      text: 'Create'
     })
 
     // Container d'édition
     this.panneau = document.createElement("div")
     this.panneau.className = 'edition-container'
+    this.panneau.id = 'edition-container'
 
     // Bouton de fermeture des modifications
     this.CloseButton = AddCustomElement.AddCustomButton({
@@ -42,9 +45,8 @@ class EditionTool {
       target: this.panneau, 
       title: 'Fermer', 
       icon: 'fa-solid fa-xmark', 
-      isActive : true,
-      customMargin: '0.5em',
-      customPosition: 'right'
+      isActive: true,
+      customClass: 'close-btn'
     })
 
     // Selecteur de type
@@ -63,28 +65,31 @@ class EditionTool {
 
     // Barre d'action inférieure
     this.ActionTools = AddCustomElement.CreateToolbar({
-      nb_groups: 3
+      nb_groups: 3,
+      spacingType: 'me-3'
     })
     this.panneau.appendChild(this.ActionTools)
-
-    // Bouton suppression
-    this.DropGeomButton = AddCustomElement.AddCustomButton({
-      id: 'delete-geometry',
-      target: this.ActionTools.childNodes[0], 
-      title: 'Delete geometry', 
-      icon: 'fa-solid fa-trash', 
-      isActive : true,
-      customClass: 'no-border-btn',
-    })
 
     // Bouton édition
     this.EditGeomButton = AddCustomElement.AddCustomButton({
       id: 'edit-geometry',
-      target: this.ActionTools.childNodes[1], 
+      target: this.ActionTools.childNodes[0], 
       title: 'Edit geometry', 
       icon: 'fas fa-pen', 
       isActive : true,
       customClass: 'no-border-btn',
+      text: 'Edit'
+    })
+
+    // Bouton suppression
+    this.DropGeomButton = AddCustomElement.AddCustomButton({
+      id: 'delete-geometry',
+      target: this.ActionTools.childNodes[1], 
+      title: 'Delete geometry', 
+      icon: 'fa-solid fa-trash', 
+      isActive : true,
+      customClass: 'no-border-btn',
+      text: 'Delete'
     })
 
     // Bouton retour arrière
@@ -95,6 +100,7 @@ class EditionTool {
       icon: 'fas fa-undo', 
       isActive : true,
       customClass: 'no-border-btn',
+      text: 'Undo'
     })
 
     // Bouton sauvegarder
@@ -102,19 +108,23 @@ class EditionTool {
       id: 'save-edit',
       target: this.ActionTools.childNodes[2], 
       title: 'Save edition', 
-      icon: 'fa-sharp fa-solid fa-floppy-disk', 
+      icon: 'fa-sharp fa-solid fa-floppy-disk',
+      text : 'Save',
       isActive : true,
       customClass: 'no-border-btn',
     })    
-    
-
-
 
     // Ajout de la barre d'édition dans le panneau
     target.addWidgetElement(this.SelectOrCreate)
 
     // Ajout de l'outil d'edition
-    target.addWidgetElement(this.panneau)
+    this.SelectButton.addEventListener('click', () => {
+      target.addWidgetElement(this.panneau)
+    })
+
+    this.CloseButton.addEventListener('click', () => {
+      this.panneau.remove()
+    })
   };
 }
 

@@ -12,7 +12,11 @@
 }
 
 .me-2 {
-    margin-right: 2rem !important;
+    margin-right: 0.5rem !important;
+}
+
+.me-3 {
+  margin: 0rem 0.2rem 0.2rem 0.2rem !important;
 }
 
 .input-group {

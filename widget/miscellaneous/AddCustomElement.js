@@ -1,39 +1,39 @@
 import '@fortawesome/fontawesome-free/css/all.css';
+import { Button } from 'bootstrap';
 import 'font-gis/css/font-gis.css'
 import 'iconicss/dist/iconicss.css'
 
 
 class AddCustomElement {
 
-    static CreateToolbar({nb_groups, position}) {
+    static CreateToolbar({nb_groups, position, spacingType, action}) {
         let el = document.createElement("div")
         el.className="btn-toolbar"
         el.role = "toolbar"
         for (let i=0; i < nb_groups; i++) {
-            this.AddButtonGroup(el, i)
+            this.AddButtonGroup(el, i, spacingType)
         }
-        el.style.textAlign = position === undefined ? '' : position
+        el.style.textAlign = position === undefined ? '' : position;
         return el
     }
 
-    static AddButtonGroup(target, id) {
+    static AddButtonGroup(target, id, spacingType) {
         let el= document.createElement('div');
-        el.className = "btn-group me-2";
+        el.className = `btn-group ${spacingType === undefined ? 'me-2' : spacingType}`;
         el.role = "group";
         el.id = `group-${id}`;
         target.appendChild(el);
         return el;
     };
 
-    static AddCustomButton({id, target, title, icon, isActive, customClass, customMargin, customPosition}) {
+    static AddCustomButton({id, target, title, icon, isActive, text, customClass}) {
         let el = document.createElement('button');
         el.id = id;
         el.title = title;
         el.innerHTML = `<i class="${icon}"</i>`;
+        el.appendChild(document.createTextNode(text === undefined ? '' : `  ${text}`))
         el.disabled = !isActive;
         el.className = customClass === undefined ? '.ol-control button' : customClass;
-        el.style.marginBottom = customMargin === undefined ? 0 : customMargin;
-        el.style.float = customPosition === undefined ? 'left' : customPosition;
         target.appendChild(el);
         return el;
     };
