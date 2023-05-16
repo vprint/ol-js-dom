@@ -1,12 +1,9 @@
-import AddCustomElement from '../miscellaneous/AddCustomElement';
+import AddCustomElement from '../../../miscellaneous/AddCustomElement';
+import ApiRequestor from '../../../services/ApiRequestor';
+import { Params } from '../../../miscellaneous/enum';
 
-/**
- * @module widget/EditionTool
- */
-
-class EditionTool {
-  constructor(target) {
-
+class EditionWidget {
+  constructor({target}) {
     // Creation de la barre de sélection/création
     this.SelectOrCreate = AddCustomElement.CreateToolbar({
       nb_groups: 1
@@ -53,7 +50,10 @@ class EditionTool {
     this.SelectType = AddCustomElement.AddSelect({
       id: 'select-type', 
       target: this.panneau, 
-      values: ['Temple','Mound','Water','Pound'],
+      values: typology,
+      indexField: 'id_typology',
+      valueField: 'typology_name',
+      error: Params.TYPOLOGY.FETCH_ERROR
     })
 
     // Textarea d'observation
@@ -87,7 +87,7 @@ class EditionTool {
       target: this.ActionTools.childNodes[1], 
       title: 'Delete geometry', 
       icon: 'fa-solid fa-trash', 
-      isActive : true,
+      isActive : false,
       customClass: 'no-border-btn',
       text: 'Delete'
     })
@@ -98,7 +98,7 @@ class EditionTool {
       target: this.ActionTools.childNodes[1], 
       title: 'Undo edit', 
       icon: 'fas fa-undo', 
-      isActive : true,
+      isActive : false,
       customClass: 'no-border-btn',
       text: 'Undo'
     })
@@ -128,4 +128,6 @@ class EditionTool {
   };
 }
 
-export default EditionTool;
+let typology = await ApiRequestor.getTypology()
+
+export default EditionWidget;
