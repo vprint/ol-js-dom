@@ -43,7 +43,8 @@ html, body {
 }
 
 .no-border-btn:hover,
-.no-border-btn:focus {
+.no-border-btn:focus,
+.no-border-btn:disabled {
   border-left: solid 2px var(--asm-dark1) !important;
 }
 

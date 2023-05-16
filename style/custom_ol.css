@@ -210,6 +210,24 @@
   background-color: var(--asm-light1);
   color: var(--asm-dark1);
   border: solid 2px var(--asm-dark1);
+  cursor: pointer;
+}
+
+.ol-control button:disabled {
+  display: block;
+  margin: 0px;
+  padding: 0.375em 0.75em;
+  color: var(--asm-light1);
+  font-weight: 400;
+  text-decoration: none;
+  font-size: 1em;
+  text-align: center;
+  line-height: 1.5;
+  background-color: var(--asm-dark1);
+  border: solid 2px transparent;
+  user-select: none;
+  cursor: default;
+  opacity: .65;
 }
 
 .ol-zoom .ol-zoom-in {
