@@ -5,8 +5,7 @@ import 'iconicss/dist/iconicss.css'
 
 
 class AddCustomElement {
-
-    static CreateToolbar({nb_groups, position, spacingType, action}) {
+    static CreateToolbar({nb_groups, position, spacingType}) {
         let el = document.createElement("div")
         el.className="btn-toolbar"
         el.role = "toolbar"
@@ -38,16 +37,28 @@ class AddCustomElement {
         return el;
     };
     
-    static AddSelect({id, target, values}) {
+    static AddSelect({id, target, values, indexField, valueField, error}) {
         let el = document.createElement('select')
         el.id = id
         el.className = 'form-select';
-        for (let i of values) {
+        if (values) {
+            for (const element of values) {
+                let option = document.createElement('option')
+                // Récupération de la position des valeurs
+                let ValuePosition = Object.keys(element).indexOf(indexField)
+                option.value = Object.values(element)[ValuePosition]
+                // Récupération de la position du texte
+                let TextPosition = Object.keys(element).indexOf(valueField)
+                option.textContent = Object.values(element)[TextPosition]
+                el.appendChild(option)
+            }
+        }
+        else { 
             let option = document.createElement('option')
-            option.value = values.indexOf(i)
-            option.textContent = i
+            option.textContent = error
             el.appendChild(option)
         }
+
         target.appendChild(el)
     }
 
