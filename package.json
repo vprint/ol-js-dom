@@ -19,6 +19,7 @@
     "iconicss": "^0.3.0",
     "ol": "^7.3.0",
     "ol-ext": "^4.0.8",
-    "ol-side-panel": "^1.0.6"
+    "ol-side-panel": "^1.0.6",
+    "simple-notify": "^0.5.5"
   }
 }
