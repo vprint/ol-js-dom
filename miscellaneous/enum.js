@@ -1,3 +1,5 @@
+import { Fill, Stroke, Style } from 'ol/style';
+
 export const Params = {
     CONNECTION_PROPERTIES: {
         BASE_URL: 'http://localhost',
@@ -30,7 +32,16 @@ export const Params = {
         ERROR: 'Erreur de requête'
     },
     STYLES: {
-        FETCH_ERROR: 'Erreur lors de la récupération des styles'
+        FETCH_ERROR: 'Erreur lors de la récupération des styles',
+        DEFAULT_STYLE: new Style({
+            fill: new Fill({
+              color: 'rgba(255,255,255,0.4)'
+            }),
+            stroke: new Stroke({
+              color: '#3399CC',
+              width: 1.25
+            }),
+        })
     },
     TYPOLOGY: {
         FETCH_ERROR: 'Erreur lors de la récupération des types'
