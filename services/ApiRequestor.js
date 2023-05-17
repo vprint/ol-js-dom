@@ -12,7 +12,7 @@ class ApiRequestor {
             Notifier.Push('error', errorMsg, Params.API_REQUESTOR.ERROR)
             console.error(error)
         }
-    }
+    };
 
     // Fonction de récupération des styles
     static async getStyles() {
@@ -20,7 +20,7 @@ class ApiRequestor {
             errorMsg: Params.STYLES.FETCH_ERROR
         })
         return result
-    }
+    };
 
     // Fonction de récupération de la typologie
     static async getTypology() {
@@ -28,7 +28,7 @@ class ApiRequestor {
             errorMsg: Params.TYPOLOGY.FETCH_ERROR
         })
         return result
-    }
+    };
 }
 
 export default ApiRequestor;
