@@ -48,7 +48,7 @@ export const STYLE_SETTINGS = {
             width: 2
         }),
         fill: new Fill({
-            color: 'rgba(220,50,225,0.2)'
+            color: 'rgba(220,50,225,0.4)'
         })
     })
 };
@@ -60,5 +60,6 @@ export const API_REQUESTOR = {
 export const TYPOLOGY_SETTINGS = {
     FETCH_ERROR: 'Erreur lors de la récupération des types',
     ID_TYPOLOGY_FIELD: 'id_typology',
+    VALUE_TYPOLOGY_FIELD: 'typology_name',
     ID_STUDY_AREA: 80
 }
