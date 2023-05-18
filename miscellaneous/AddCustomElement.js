@@ -1,5 +1,4 @@
 import '@fortawesome/fontawesome-free/css/all.css';
-import { Button } from 'bootstrap';
 import 'font-gis/css/font-gis.css'
 import 'iconicss/dist/iconicss.css'
 
