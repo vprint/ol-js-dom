@@ -9,7 +9,11 @@ class ApiRequestor {
             const json = await response.json();
             return(json)
         } catch (error) {
-            Notifier.Push('error', errorMsg, API_REQUESTOR.ERROR)
+            Notifier.Push({
+                mode: 'error', 
+                text: errorMsg,
+                title: API_REQUESTOR.ERROR
+            })
             console.error(error)
         }
     };
