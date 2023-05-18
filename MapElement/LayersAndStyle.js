@@ -4,9 +4,10 @@ import OSM from 'ol/source/OSM';
 import MVT from 'ol/format/MVT.js';
 import VectorTileLayer from 'ol/layer/VectorTile.js';
 import VectorTileSource from 'ol/source/VectorTile.js';
-import ApiRequestor from '../services/ApiRequestor';
-import { Params } from '../miscellaneous/enum';
+import ApiRequestor from '../Services/ApiRequestor';
+import { LAYERS_SETTINGS, STYLE_SETTINGS } from '../Miscellaneous/enum';
 import { Fill, Stroke, Style } from 'ol/style';
+import SelectFeatures from './SelectFeatures';
 
 class LayersAndStyle {
     constructor({ map }) {
@@ -15,10 +16,12 @@ class LayersAndStyle {
         this.features = new VectorTileLayer({
             source: new VectorTileSource({
                 format: new MVT(),
-                url: `${Params.MAP.LAYERS.VECTOR_TILES.URL}/{z}/{x}/{y}.pbf`,
-                attributions: Params.MAP.LAYERS.VECTOR_TILES.ATTRIBUTION,
+                url: `${LAYERS_SETTINGS.VECTOR_TILES.URL}/{z}/{x}/{y}.pbf`,
+                attributions: LAYERS_SETTINGS.VECTOR_TILES.ATTRIBUTION,
             }),
-            zIndex: Params.MAP.LAYERS.VECTOR_TILES.ZINDEX,
+            zIndex: LAYERS_SETTINGS.VECTOR_TILES.ZINDEX,
+            name: LAYERS_SETTINGS.VECTOR_TILES.NAME,
+            preload: Infinity,
             style: cartoFunction
         });
         map.addLayer(this.features);
@@ -34,14 +37,18 @@ class LayersAndStyle {
         this.JawgMapsStreets = new TileLayer({
             preload: 3,
             source: new XYZ({
-                url: `${Params.MAP.LAYERS.BACKGROUND.JAWGMAPS_STREETS.URL}access-token=${Params.MAP.LAYERS.BACKGROUND.JAWGMAPS_STREETS.TOKEN}`,
+                url: `${LAYERS_SETTINGS.BACKGROUND.JAWGMAPS_STREETS.URL}access-token=${LAYERS_SETTINGS.BACKGROUND.JAWGMAPS_STREETS.TOKEN}`,
                 tilePixelRatio: 2,
                 zIndex: 1,
-                attributions: [Params.MAP.LAYERS.BACKGROUND.JAWGMAPS_STREETS.ATTRIBUTION]
+                attributions: [LAYERS_SETTINGS.BACKGROUND.JAWGMAPS_STREETS.ATTRIBUTION]
             }),
         zIndex:1
         });
         map.addLayer(this.JawgMapsStreets)
+
+        new SelectFeatures({
+            map: map
+        })
     }
 };
 
@@ -76,7 +83,7 @@ function cartoFunction(feature) {
     }
     // Si le style n'est pas disponible alors le DEFAULT_STYLE est retourné
     else {
-        return Params.STYLES.DEFAULT_STYLE
+        return STYLE_SETTINGS.DEFAULT_STYLE
     }
 };
 

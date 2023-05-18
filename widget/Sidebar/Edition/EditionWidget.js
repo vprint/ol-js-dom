@@ -1,6 +1,6 @@
-import AddCustomElement from '../../../miscellaneous/AddCustomElement';
-import ApiRequestor from '../../../services/ApiRequestor';
-import { Params } from '../../../miscellaneous/enum';
+import AddCustomElement from '../../../Miscellaneous/AddCustomElement';
+import ApiRequestor from '../../../Services/ApiRequestor';
+import { TYPOLOGY_SETTINGS } from '../../../Miscellaneous/enum';
 
 class EditionWidget {
   constructor({target}) {
@@ -53,7 +53,7 @@ class EditionWidget {
       values: typology,
       indexField: 'id_typology',
       valueField: 'typology_name',
-      error: Params.TYPOLOGY.FETCH_ERROR
+      error: TYPOLOGY_SETTINGS.FETCH_ERROR
     })
 
     // Textarea d'observation

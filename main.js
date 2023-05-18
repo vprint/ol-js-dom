@@ -2,7 +2,7 @@ import './style.css';
 import { Map, View } from 'ol';
 import LeftSidebar from './widget/LeftSidebar';
 import LayersAndStyle from './MapElement/LayersAndStyle'
-import { Params } from './miscellaneous/enum'
+import { MAP_SETTINGS } from './Miscellaneous/enum'
 import { fromLonLat } from 'ol/proj'
 
 class MainMap {
@@ -10,8 +10,8 @@ class MainMap {
     this.map = new Map({
       target: 'map',
       view: new View({
-        center: fromLonLat(Params.MAP.CENTER),
-        zoom: Params.MAP.ZOOM
+        center: fromLonLat(MAP_SETTINGS.CENTER),
+        zoom: MAP_SETTINGS.ZOOM
       })
     });
 
