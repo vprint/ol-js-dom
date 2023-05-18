@@ -7,7 +7,6 @@ import VectorTileSource from 'ol/source/VectorTile.js';
 import ApiRequestor from '../Services/ApiRequestor';
 import { LAYERS_SETTINGS, STYLE_SETTINGS } from '../Miscellaneous/enum';
 import { Fill, Stroke, Style } from 'ol/style';
-import SelectFeatures from './SelectFeatures';
 
 class LayersAndStyle {
     constructor({ map }) {
@@ -15,7 +14,9 @@ class LayersAndStyle {
         // Tuiles vectorielles Features
         this.features = new VectorTileLayer({
             source: new VectorTileSource({
-                format: new MVT(),
+                format: new MVT({
+                    idProperty: 'id'
+                }),
                 url: `${LAYERS_SETTINGS.VECTOR_TILES.URL}/{z}/{x}/{y}.pbf`,
                 attributions: LAYERS_SETTINGS.VECTOR_TILES.ATTRIBUTION,
             }),
@@ -45,10 +46,6 @@ class LayersAndStyle {
         zIndex:1
         });
         map.addLayer(this.JawgMapsStreets)
-
-        new SelectFeatures({
-            map: map
-        })
     }
 };
 

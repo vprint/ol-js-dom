@@ -41,6 +41,15 @@ export const STYLE_SETTINGS = {
           color: '#3399CC',
           width: 1.25
         }),
+    }),
+    SELECTED_STYLE: new Style({
+        stroke: new Stroke({
+            color: 'rgba(220,50,225,1)',
+            width: 2
+        }),
+        fill: new Fill({
+            color: 'rgba(220,50,225,0.2)'
+        })
     })
 };
 
@@ -49,5 +58,7 @@ export const API_REQUESTOR = {
     ERROR: 'Erreur de requête'
 }
 export const TYPOLOGY_SETTINGS = {
-    FETCH_ERROR: 'Erreur lors de la récupération des types'
+    FETCH_ERROR: 'Erreur lors de la récupération des types',
+    ID_TYPOLOGY_FIELD: 'id_typology',
+    ID_STUDY_AREA: 80
 }
