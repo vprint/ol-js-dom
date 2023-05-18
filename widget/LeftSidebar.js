@@ -1,26 +1,25 @@
 import { SidePanel } from 'ol-side-panel';
-import EditBar from './Edition/EditBar';
-
-/**
- * @module widget
- */
+import EditionWidget from './Sidebar/Edition/EditionWidget';
+import '@fortawesome/fontawesome-free/css/all.css';
 
 class LeftSidebar {
-  Sidebar;
-  layersPane;
-  constructor(map) {
+  constructor({target}) {
+
     // Creation sidebar
     this.Sidebar = new SidePanel
-    map.addControl(this.Sidebar);
+    target.addControl(this.Sidebar);
 
     // Ajout d'un panneau
     this.layersPane = this.Sidebar.definePane({
       paneId: 'layers',
       name: "Layers",
-      icon: 'Y'
+      icon: '<i class="fa-solid fa-database" style="position:relative;left:-1px;top:-7px"</i>'
     });
 
-    new EditBar(this.layersPane)
+    // Ajout de l'outil de sélection et de création
+    new EditionWidget({
+      target: this.layersPane
+    })
   }
 }
 

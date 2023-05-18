@@ -8,7 +8,7 @@
   },
   "devDependencies": {
     "sass": "^1.62.1",
-    "vite": "^4.0.4"
+    "vite": "^4.3.7"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.4.0",
@@ -18,7 +18,8 @@
     "font-gis": "^1.0.5",
     "iconicss": "^0.3.0",
     "ol": "^7.3.0",
-    "ol-ext": "^4.0.7",
-    "ol-side-panel": "^1.0.6"
+    "ol-ext": "^4.0.8",
+    "ol-side-panel": "^1.0.6",
+    "simple-notify": "^0.5.5"
   }
 }

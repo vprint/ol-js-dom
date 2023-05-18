@@ -1,25 +1,26 @@
 import './style.css';
-import {Map, View} from 'ol';
-import TileLayer from 'ol/layer/Tile';
-import OSM from 'ol/source/OSM';
+import { Map, View } from 'ol';
 import LeftSidebar from './widget/LeftSidebar';
+import LayersAndStyle from './MapElement/LayersAndStyle'
+import { Params } from './miscellaneous/enum'
+import { fromLonLat } from 'ol/proj'
 
 class MainMap {
   constructor() {
     this.map = new Map({
       target: 'map',
-      layers: [
-        new TileLayer({
-          source: new OSM()
-        })
-      ],
       view: new View({
-        center: [0, 0],
-        zoom: 2
+        center: fromLonLat(Params.MAP.CENTER),
+        zoom: Params.MAP.ZOOM
       })
     });
 
-    new LeftSidebar(this.map);
+    new LayersAndStyle({
+      map: this.map
+    });
+    new LeftSidebar({
+      target: this.map
+    });
   }
 }
 

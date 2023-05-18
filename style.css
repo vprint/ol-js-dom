@@ -1,9 +1,12 @@
-@import "node_modules/ol/ol.css";
+@import "./style/custom_ol.css";
+@import "./style/custom_bootstrap.css";
+
 
 html, body {
   margin: 0;
   height: 100%;
 }
+
 #map {
   position: absolute;
   top: 0;
@@ -11,20 +14,58 @@ html, body {
   width: 100%;
 }
 
-.ol-side-panel-tabs, .ol-side-panel-tabs > button, .ol-side-panel-tabs > button.active, .ol-control button {
-  color: #8A1946;
-  background-color: #f9f6ed;
+.ol-side-panel-tabs > button.active {
+  color: var(--asm-light1) !important;
+  background-color: var(--asm-dark1) !important;
 }
 
-.ol-side-panel-tabs > button:hover, .ol-control button:hover, .ol-control button:active  {
-  color:#f9f6ed;
-  background-color: #8A1946;
+.ol-side-panel-tabs, .ol-side-panel-tabs > button {
+  color: var(--asm-dark1);
+  background-color: var(--asm-light1);
+}
+
+.ol-side-panel-tabs > button:hover {
+  color:var(--asm-light1);
+  background-color: var(--asm-dark1);
 }
 
 .ol-side-panel-content {
-  background-color:#f9f6ed ;
+  background-color:var(--asm-light1) ;
 }
 
 .ol-side-panel-close:hover {
-  color: #8A1946;
+  color: var(--asm-dark1);
+}
+
+.no-border-btn {
+  border: solid 0px transparent !important;
+  border-left: solid 2px transparent !important;
+}
+
+.no-border-btn:hover,
+.no-border-btn:focus,
+.no-border-btn:disabled {
+  border-left: solid 2px var(--asm-dark1) !important;
+}
+
+.edition-container {
+  padding: 0em 0.5rem 0em 0.5em;
+  margin-top: 0.5rem;
+  border: solid 2px var(--asm-dark1);
+  border-radius: 5px;
+}
+
+.close-btn {
+  margin: 0em 0em 0.5em 0em !important;
+  border: solid 2px var(--asm-dark1) !important;
+  position: relative !important;
+  float: right !important;
+  right: -0.5em !important;
+  border-top: solid 0px !important;
+  border-right: solid 0px !important;
+  border-radius: 0em 0px 0em 0em !important;
+}
+
+.close-btn:hover {
+  background-color: transparent !important;
 }
