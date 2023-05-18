@@ -1,9 +1,10 @@
 import AddCustomElement from '../../../Miscellaneous/AddCustomElement';
 import ApiRequestor from '../../../Services/ApiRequestor';
 import { TYPOLOGY_SETTINGS } from '../../../Miscellaneous/enum';
+import SelectFeatures from '../../../MapElement/SelectFeatures';
 
 class EditionWidget {
-  constructor({target}) {
+  constructor({target, map}) {
     // Creation de la barre de sélection/création
     this.SelectOrCreate = AddCustomElement.CreateToolbar({
       nb_groups: 1
@@ -51,8 +52,8 @@ class EditionWidget {
       id: 'select-type', 
       target: this.panneau, 
       values: typology,
-      indexField: 'id_typology',
-      valueField: 'typology_name',
+      indexField: TYPOLOGY_SETTINGS.ID_TYPOLOGY_FIELD,
+      valueField: TYPOLOGY_SETTINGS.VALUE_TYPOLOGY_FIELD,
       error: TYPOLOGY_SETTINGS.FETCH_ERROR
     })
 
@@ -117,13 +118,20 @@ class EditionWidget {
     // Ajout de la barre d'édition dans le panneau
     target.addWidgetElement(this.SelectOrCreate)
 
+    this.featureEngine = new SelectFeatures({
+      map: map
+    })
+
     // Ajout de l'outil d'edition
     this.SelectButton.addEventListener('click', () => {
+      this.featureEngine.AddSelectionInteraction()
       target.addWidgetElement(this.panneau)
     })
 
     this.CloseButton.addEventListener('click', () => {
       this.panneau.remove()
+      this.featureEngine.RemoveSelectionInteraction()
+
     })
   };
 }

@@ -6,7 +6,7 @@ class LeftSidebar {
   constructor({target}) {
 
     // Creation sidebar
-    this.Sidebar = new SidePanel
+    this.Sidebar = new SidePanel()
     target.addControl(this.Sidebar);
 
     // Ajout d'un panneau
@@ -18,7 +18,8 @@ class LeftSidebar {
 
     // Ajout de l'outil de sélection et de création
     new EditionWidget({
-      target: this.layersPane
+      target: this.layersPane,
+      map: target
     })
   }
 }
