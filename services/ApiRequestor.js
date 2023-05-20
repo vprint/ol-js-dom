@@ -33,6 +33,14 @@ class ApiRequestor {
         })
         return result
     };
+
+    static async getFeatureById(id) {
+        const result = await this.getJSON(`${CONNECTION_PROPERTIES.FeatureServer.Collections}carto.td_features/items?id=${id}`, {
+            errorMsg: CONNECTION_PROPERTIES.FeatureServer.Error
+        })
+        return result.features[0]
+    };
+
     static async getFeatureServerStatus() {
         const result = await this.getJSON(CONNECTION_PROPERTIES.FeatureServer.LandingPage, {
             errorMsg: CONNECTION_PROPERTIES.FeatureServer.Error
