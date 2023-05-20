@@ -3,8 +3,10 @@ import { Fill, Stroke, Style } from 'ol/style';
 export const CONNECTION_PROPERTIES = {
     BASE_URL: 'http://localhost',
     FeatureServer: {
+        LandingPage: 'http://localhost:9000/FeatureServer/',
         Collections:'http://localhost:9000/FeatureServer/collections/',
-        Functions:'http://localhost:9000/FeatureServer/functions/'
+        Functions:'http://localhost:9000/FeatureServer/functions/',
+        Error:'Erreur lors de la requête sur le serveur de données'
     },
     TREX_SERVER: 'http://localhost:6767/'
 };
@@ -57,9 +59,15 @@ export const STYLE_SETTINGS = {
 export const API_REQUESTOR = {
     ERROR: 'Erreur de requête'
 }
-export const TYPOLOGY_SETTINGS = {
-    FETCH_ERROR: 'Erreur lors de la récupération des types',
-    ID_TYPOLOGY_FIELD: 'id_typology',
-    VALUE_TYPOLOGY_FIELD: 'typology_name',
-    ID_STUDY_AREA: 80
+export const FEATURES_SETTINGS = {
+    TYPOLOGY_SETTINGS: {
+        FETCH_ERROR: 'Erreur lors de la récupération des types',
+        ID_TYPOLOGY_FIELD: 'id_typology',
+        VALUE_TYPOLOGY_FIELD: 'typology_name',
+        ID_STUDY_AREA: 80
+    },
+    OBSERVATION : 'commentaire'
+}
+export const OBSERVATION_SETTINGS = {
+    VALUE_OBSERVATION_FIELD : 'commentaire'
 }

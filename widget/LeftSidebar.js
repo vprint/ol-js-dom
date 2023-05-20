@@ -1,10 +1,10 @@
 import { SidePanel } from 'ol-side-panel';
 import EditionWidget from './Sidebar/Edition/EditionWidget';
 import '@fortawesome/fontawesome-free/css/all.css';
+import ApiRequestor from '../Services/ApiRequestor';
 
 class LeftSidebar {
   constructor({target}) {
-
     // Creation sidebar
     this.Sidebar = new SidePanel()
     target.addControl(this.Sidebar);
