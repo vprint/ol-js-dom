@@ -33,6 +33,16 @@ class ApiRequestor {
         })
         return result
     };
+    static async getFeatureServerStatus() {
+        const result = await this.getJSON(CONNECTION_PROPERTIES.FeatureServer.LandingPage, {
+            errorMsg: CONNECTION_PROPERTIES.FeatureServer.Error
+        })
+        if (!result) {
+            return false
+        } else {
+            return true
+        }
+    };
 }
 
 export default ApiRequestor;
