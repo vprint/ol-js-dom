@@ -1,8 +1,7 @@
-import { LAYERS_SETTINGS } from "../Miscellaneous/enum";
 import VectorTileLayer from 'ol/layer/VectorTile.js';
-import { TYPOLOGY_SETTINGS, STYLE_SETTINGS } from "../Miscellaneous/enum";
-import Notifier from "../Miscellaneous/Notifier";
-import ApiRequestor from "../Services/ApiRequestor";
+import { FEATURES_SETTINGS, STYLE_SETTINGS, LAYERS_SETTINGS } from "../../../Miscellaneous/enum";
+import Notifier from "../../../Miscellaneous/Notifier";
+import ApiRequestor from "../../../Services/ApiRequestor";
 
 class SelectFeatures {
   constructor({ map }) {
@@ -35,11 +34,13 @@ class SelectFeatures {
         this.SelectionState = !this.SelectionState;
         map.on('click', this.SelectElement = async (e) => {
 
-          // Selection des features avec une tolérance de 5px
-          let features = map.getFeaturesAtPixel(e.pixel, { hitTolerance: 5 });
-
+          // Selection des éléments avec une tolérance de 5px
+          let features = map.getFeaturesAtPixel(e.pixel, {
+            hitTolerance: 5 
+          });
+            
           // Si aucune feature n'est intersecté ou si il n'y a qu'une feature de type study_area alors rien n'est retourné
-          if (!features.length || (features.find(element => element.get(TYPOLOGY_SETTINGS.ID_TYPOLOGY_FIELD) == TYPOLOGY_SETTINGS.ID_STUDY_AREA) && features.length == 1)) {
+          if (!features.length || (features.find(element => element.get(FEATURES_SETTINGS.TYPOLOGY.ID_TYPOLOGY_FIELD) == FEATURES_SETTINGS.TYPOLOGY.ID_STUDY_AREA) && features.length == 1)) {
             this.selection = {};
             // Notification d'absence de données
             Notifier.Push({
@@ -54,7 +55,7 @@ class SelectFeatures {
           }
 
           // Recherche du premier élément d'un type différent que study_area
-          const feature = features.find(element => element.get(TYPOLOGY_SETTINGS.ID_TYPOLOGY_FIELD) !== TYPOLOGY_SETTINGS.ID_STUDY_AREA);
+          const feature = features.find(element => element.get(FEATURES_SETTINGS.TYPOLOGY.ID_TYPOLOGY_FIELD) !== FEATURES_SETTINGS.TYPOLOGY.ID_STUDY_AREA);
 
           const fid = feature.getId();
 
@@ -70,15 +71,11 @@ class SelectFeatures {
           });
           window.dispatchEvent(SelectEvent);
 
-          // Requête de la géométrie complète de la feature
-          const ComplexeFeature = await ApiRequestor.getFeatureById(fid)
-          const ComplexeFeatureEvent = new CustomEvent('ComplexeFeatureReturned', {
-            detail: ComplexeFeature
-          });
-          window.dispatchEvent(ComplexeFeatureEvent);
+          this.get_OGCFeature(fid)
         });
       };
     };
+
 
 
 
@@ -91,6 +88,20 @@ class SelectFeatures {
         this.selectionLayer.changed();
       };
     };
+  };
+
+  /**
+  * Défini les valeurs du formulaire.
+  * 
+  * @param {string} id - Id de la géométrie à selectionner
+  * @returns {Object} - OGC Feature, format GeoJSON
+  */
+  async get_OGCFeature(id) {
+    const OGCFeature = await ApiRequestor.getFeatureById(id)
+    const OGCFeatureEvent = new CustomEvent('OGCFeature_Returned', {
+      detail: OGCFeature
+    });
+    window.dispatchEvent(OGCFeatureEvent);
   };
 };
 
