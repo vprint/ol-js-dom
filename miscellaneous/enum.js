@@ -60,14 +60,11 @@ export const API_REQUESTOR = {
     ERROR: 'Erreur de requête'
 }
 export const FEATURES_SETTINGS = {
-    TYPOLOGY_SETTINGS: {
+    TYPOLOGY: {
         FETCH_ERROR: 'Erreur lors de la récupération des types',
         ID_TYPOLOGY_FIELD: 'id_typology',
         VALUE_TYPOLOGY_FIELD: 'typology_name',
         ID_STUDY_AREA: 80
     },
     OBSERVATION : 'commentaire'
-}
-export const OBSERVATION_SETTINGS = {
-    VALUE_OBSERVATION_FIELD : 'commentaire'
 }

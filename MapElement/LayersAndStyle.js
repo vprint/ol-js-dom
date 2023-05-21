@@ -5,7 +5,7 @@ import MVT from 'ol/format/MVT.js';
 import VectorTileLayer from 'ol/layer/VectorTile.js';
 import VectorTileSource from 'ol/source/VectorTile.js';
 import ApiRequestor from '../Services/ApiRequestor';
-import { LAYERS_SETTINGS, STYLE_SETTINGS, TYPOLOGY_SETTINGS } from '../Miscellaneous/enum';
+import { LAYERS_SETTINGS, STYLE_SETTINGS, FEATURES_SETTINGS } from '../Miscellaneous/enum';
 import { Fill, Stroke, Style } from 'ol/style';
 
 class LayersAndStyle {
@@ -75,8 +75,8 @@ if (JSONStyle) {
 
 function cartoFunction(feature) {
     // Application des styles en fonction d'id_typology
-    if (StyleCache[feature.get(TYPOLOGY_SETTINGS.ID_TYPOLOGY_FIELD)]) {
-        return StyleCache[feature.get(TYPOLOGY_SETTINGS.ID_TYPOLOGY_FIELD)]
+    if (StyleCache[feature.get(FEATURES_SETTINGS.TYPOLOGY.ID_TYPOLOGY_FIELD)]) {
+        return StyleCache[feature.get(FEATURES_SETTINGS.TYPOLOGY.ID_TYPOLOGY_FIELD)]
     }
     // Si le style n'est pas disponible alors le DEFAULT_STYLE est retourné
     else {

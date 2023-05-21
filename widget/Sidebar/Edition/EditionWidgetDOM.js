@@ -1,6 +1,6 @@
 import AddCustomElement from '../../../Miscellaneous/AddCustomElement';
 import ApiRequestor from '../../../Services/ApiRequestor';
-import { TYPOLOGY_SETTINGS } from '../../../Miscellaneous/enum';
+import { FEATURES_SETTINGS } from '../../../Miscellaneous/enum';
 
 class EditionWidgetDOM {
   constructor({target, map}) {
@@ -55,16 +55,17 @@ class EditionWidgetDOM {
       id: 'select-type', 
       target: this.form, 
       values: typology,
-      indexField: TYPOLOGY_SETTINGS.ID_TYPOLOGY_FIELD,
-      valueField: TYPOLOGY_SETTINGS.VALUE_TYPOLOGY_FIELD,
-      error: TYPOLOGY_SETTINGS.FETCH_ERROR
+      indexField: FEATURES_SETTINGS.TYPOLOGY.ID_TYPOLOGY_FIELD,
+      valueField: FEATURES_SETTINGS.TYPOLOGY.VALUE_TYPOLOGY_FIELD,
+      error: FEATURES_SETTINGS.TYPOLOGY.FETCH_ERROR
     })
 
     // Textarea d'observation
     this.Observation = AddCustomElement.AddTextArea({
       id: 'input-observation', 
       target: this.form, 
-      text: 'Observation'
+      text: 'Observation',
+      field_ref: FEATURES_SETTINGS.OBSERVATION
     })
 
     this.panneau.appendChild(this.form)
