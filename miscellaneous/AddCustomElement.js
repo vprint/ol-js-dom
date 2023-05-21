@@ -62,10 +62,11 @@ class AddCustomElement {
         return el
     }
 
-    static AddTextArea({id, target, text}) {
+    static AddTextArea({id, target, text, field_ref}) {
         let el = document.createElement('div');
         el.id = id;
         el.className = 'input-group';
+        el.dataset.field_ref = field_ref
         let span = document.createElement('span');
         span.className = 'input-group-text';
         span.textContent = text;
