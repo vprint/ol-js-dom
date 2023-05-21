@@ -1,5 +1,4 @@
 import '@fortawesome/fontawesome-free/css/all.css';
-import { Button } from 'bootstrap';
 import 'font-gis/css/font-gis.css'
 import 'iconicss/dist/iconicss.css'
 
@@ -41,6 +40,7 @@ class AddCustomElement {
         let el = document.createElement('select')
         el.id = id
         el.className = 'form-select';
+        el.dataset.field_ref = indexField;
         if (values) {
             for (const element of values) {
                 let option = document.createElement('option')
@@ -58,14 +58,15 @@ class AddCustomElement {
             option.textContent = error
             el.appendChild(option)
         }
-
         target.appendChild(el)
+        return el
     }
 
-    static AddTextArea({id, target, text}) {
+    static AddTextArea({id, target, text, field_ref}) {
         let el = document.createElement('div');
         el.id = id;
         el.className = 'input-group';
+        el.dataset.field_ref = field_ref
         let span = document.createElement('span');
         span.className = 'input-group-text';
         span.textContent = text;

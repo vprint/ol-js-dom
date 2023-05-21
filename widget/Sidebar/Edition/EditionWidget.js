@@ -1,133 +1,96 @@
-import AddCustomElement from '../../../miscellaneous/AddCustomElement';
-import ApiRequestor from '../../../services/ApiRequestor';
-import { Params } from '../../../miscellaneous/enum';
+import EditionWidgetDOM from "./EditionWidgetDOM";
+import ModifyFeatures from "./ModifyFeatures";
+import SelectFeatures from './SelectFeatures';
 
-class EditionWidget {
-  constructor({target}) {
-    // Creation de la barre de sélection/création
-    this.SelectOrCreate = AddCustomElement.CreateToolbar({
-      nb_groups: 1
-    })
+class EditionWidget extends EditionWidgetDOM {
+    constructor({target, map}) {
+        super({target, map});
 
-    // Bouton de sélection
-    this.SelectButton = AddCustomElement.AddCustomButton({
-      id: 'select-geometry',
-      target: this.SelectOrCreate.childNodes[0], 
-      title: 'Select', 
-      icon: 'fg-arrow-o', 
-      isActive : true,
-      customClass: 'no-border-btn',
-      text: 'Select'
-    })
+        this.OGC_Feature = null
+        // Définition du selecteur de géometrie
+        this.FeatureSelector = new SelectFeatures({
+            map: map
+        });
 
-    // Bouton de création
-    this.CreateButton = AddCustomElement.AddCustomButton({
-      id: 'create-geometry',
-      target: this.SelectOrCreate.childNodes[0], 
-      title: 'Create', 
-      icon: 'fg-regular-shape-pt', 
-      isActive : true,
-      customClass: 'no-border-btn',
-      text: 'Create'
-    })
+        this.ModifyEngine = new ModifyFeatures({
+            map: map
+        })
 
-    // Container d'édition
-    this.panneau = document.createElement("div")
-    this.panneau.className = 'edition-container'
-    this.panneau.id = 'edition-container'
+        // Ajout de l'interaction de selection après un clic sur selectionner.
+        this.SelectButton.addEventListener('click', () => {
+            this.FeatureSelector.AddSelectionInteraction();
+        });
 
-    // Bouton de fermeture des modifications
-    this.CloseButton = AddCustomElement.AddCustomButton({
-      id: 'fermer-edition',
-      target: this.panneau, 
-      title: 'Fermer', 
-      icon: 'fa-solid fa-xmark', 
-      isActive: true,
-      customClass: 'close-btn'
-    })
+        // Fonction d'ajout de la fenêtre d'édition
+        this.AddEditionWidget = (e) => {
+            target.addWidgetElement(this.panneau);
+            this.EditGeomButton.disabled = true
+            
+            this.defineFormValues({
+                form: this.form,
+                element: e.detail
+            })
+        }
 
-    // Selecteur de type
-    this.SelectType = AddCustomElement.AddSelect({
-      id: 'select-type', 
-      target: this.panneau, 
-      values: typology,
-      indexField: 'id_typology',
-      valueField: 'typology_name',
-      error: Params.TYPOLOGY.FETCH_ERROR
-    })
+        // Ecouteur de sélection de tuiles vectorielles
+        window.addEventListener('VectorTileFeatureSelected', this.AddEditionWidget);
+        window.addEventListener('NoVectorTileFeatureSelected', () => {
+            this.panneau.remove()
+            this.ModifyEngine.CancelEdition();
+        });
 
-    // Textarea d'observation
-    this.Observation = AddCustomElement.AddTextArea({
-      id: 'input-observation', 
-      target: this.panneau, 
-      text: 'Observation'
-    })
+        // Ecouteur de selection des géométries OGC
+        window.addEventListener('OGCFeature_Returned', (e) => {
+            this.EditGeomButton.disabled = false
+            this.OGC_Feature = e.detail
+        });
 
-    // Barre d'action inférieure
-    this.ActionTools = AddCustomElement.CreateToolbar({
-      nb_groups: 3,
-      spacingType: 'me-3'
-    })
-    this.panneau.appendChild(this.ActionTools)
+        this.EditGeomButton.addEventListener('click', () => {
+            this.FeatureSelector.RemoveSelectionInteraction();
+            this.ModifyEngine.EnableEdition(this.OGC_Feature)
+        });
+        
+        // suppression de l'interaction de selection après un clic sur fermer
+        this.CloseButton.addEventListener('click', () => {
+            this.cancelSelectInteraction()
+        })
 
-    // Bouton édition
-    this.EditGeomButton = AddCustomElement.AddCustomButton({
-      id: 'edit-geometry',
-      target: this.ActionTools.childNodes[0], 
-      title: 'Edit geometry', 
-      icon: 'fas fa-pen', 
-      isActive : true,
-      customClass: 'no-border-btn',
-      text: 'Edit'
-    })
+        // Ecouteur d'événement pour la touche "Echap"
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                this.cancelSelectInteraction();
+            }
+        });
+    }
 
-    // Bouton suppression
-    this.DropGeomButton = AddCustomElement.AddCustomButton({
-      id: 'delete-geometry',
-      target: this.ActionTools.childNodes[1], 
-      title: 'Delete geometry', 
-      icon: 'fa-solid fa-trash', 
-      isActive : false,
-      customClass: 'no-border-btn',
-      text: 'Delete'
-    })
+    /**
+     * Supprime l'interaction de sélection
+     */
+    cancelSelectInteraction() {
+        this.FeatureSelector.RemoveSelectionInteraction();
+        this.EditGeomButton.disabled = true
+        this.panneau.remove();
+        this.ModifyEngine.CancelEdition();
+    }
 
-    // Bouton retour arrière
-    this.UndoEditButton = AddCustomElement.AddCustomButton({
-      id: 'undo-edit',
-      target: this.ActionTools.childNodes[1], 
-      title: 'Undo edit', 
-      icon: 'fas fa-undo', 
-      isActive : false,
-      customClass: 'no-border-btn',
-      text: 'Undo'
-    })
-
-    // Bouton sauvegarder
-    this.SaveEditButton = AddCustomElement.AddCustomButton({
-      id: 'save-edit',
-      target: this.ActionTools.childNodes[2], 
-      title: 'Save edition', 
-      icon: 'fa-sharp fa-solid fa-floppy-disk',
-      text : 'Save',
-      isActive : true,
-      customClass: 'no-border-btn',
-    })    
-
-    // Ajout de la barre d'édition dans le panneau
-    target.addWidgetElement(this.SelectOrCreate)
-
-    // Ajout de l'outil d'edition
-    this.SelectButton.addEventListener('click', () => {
-      target.addWidgetElement(this.panneau)
-    })
-
-    this.CloseButton.addEventListener('click', () => {
-      this.panneau.remove()
-    })
-  };
+    /**
+     * Défini les valeurs du formulaire.
+     * 
+     * @param {HTMLElement} form - formulaire en entrée
+     * @param {string} element - Valeurs à appliquer
+     */
+    defineFormValues({form, element}) {
+        for (let i of form.children) {
+            // Gestion des textarea
+            if (i.className == 'input-group') {
+                let textarea = i.querySelector('.form-control')
+                textarea.value = (Object.values(element)[Object.keys(element).indexOf(i.dataset.field_ref)])
+            }
+            else {
+                i.value = (Object.values(element)[Object.keys(element).indexOf(i.dataset.field_ref)])
+            };
+        };
+    };
 }
-
-let typology = await ApiRequestor.getTypology()
 
 export default EditionWidget;

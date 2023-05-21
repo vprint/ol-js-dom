@@ -21,7 +21,7 @@ class Notifier {
             position: 'right top'
         })
     }
-    static Push(mode, text, title) {
+    static Push({mode, title, text}) {
         switch (mode) {
             case 'success':
                 this.CreateNotify(mode, text, title, 3000)
