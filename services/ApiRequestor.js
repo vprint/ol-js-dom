@@ -1,8 +1,13 @@
-import { CONNECTION_PROPERTIES, API_REQUESTOR, STYLE_SETTINGS, TYPOLOGY_SETTINGS} from '../Miscellaneous/enum';
+import { CONNECTION_PROPERTIES, API_REQUESTOR, STYLE_SETTINGS, FEATURES_SETTINGS} from '../Miscellaneous/enum';
 import Notifier from '../Miscellaneous/Notifier';
 
 class ApiRequestor {
-    // Fonction de requête générique
+    /**
+    * Requêtes génériques
+    * @param {string} URL - URL de la requête
+    * @param {string} errorMsg - Message d'erreur
+    * @returns {Promise<Object>} Objet JSON
+    */ 
     static async getJSON(URL, {errorMsg} = {}) {
         try {
             const response = await fetch(URL);
@@ -18,7 +23,9 @@ class ApiRequestor {
         }
     };
 
-    // Fonction de récupération des styles
+    /**
+    * Récupération des styles
+    */ 
     static async getStyles() {
         const result = await this.getJSON(`${CONNECTION_PROPERTIES.FeatureServer.Functions}carto.get_styles/items`, {
             errorMsg: STYLE_SETTINGS.FETCH_ERROR
@@ -26,14 +33,20 @@ class ApiRequestor {
         return result
     };
 
-    // Fonction de récupération de la typologie
+    /**
+    * Récupération des valeurs de typologie
+    */ 
     static async getTypology() {
         const result = await this.getJSON(`${CONNECTION_PROPERTIES.FeatureServer.Functions}carto.get_typology/items`, {
-            errorMsg: TYPOLOGY_SETTINGS.FETCH_ERROR
+            errorMsg: FEATURES_SETTINGS.TYPOLOGY.FETCH_ERROR
         })
         return result
     };
 
+    /**
+    * Récupération des entités complètes
+    * @param {string} id - id de la l'entité à récuperer
+    */ 
     static async getFeatureById(id) {
         const result = await this.getJSON(`${CONNECTION_PROPERTIES.FeatureServer.Collections}carto.td_features/items?id=${id}`, {
             errorMsg: CONNECTION_PROPERTIES.FeatureServer.Error
@@ -41,15 +54,14 @@ class ApiRequestor {
         return result.features[0]
     };
 
+    /**
+    * Verification du status du serveur
+    */ 
     static async getFeatureServerStatus() {
         const result = await this.getJSON(CONNECTION_PROPERTIES.FeatureServer.LandingPage, {
             errorMsg: CONNECTION_PROPERTIES.FeatureServer.Error
         })
-        if (!result) {
-            return false
-        } else {
-            return true
-        }
+        return !result ? false : true
     };
 }
 
