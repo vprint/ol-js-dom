@@ -22,35 +22,30 @@ class ModifyFeatures {
       },
     });
     this.map.addLayer(this.EditLayer)
-
-    this.EnableEdition = function(e) {
-        this.feature = new GeoJSON().readFeatures(e, {
-          featureProjection: 'EPSG:3857'
-        });
-        this.EditLayer.getSource().clear();
-        this.EditLayer.getSource().addFeatures(this.feature);
-        this.map.addInteraction(this.modify);
-    }
-
+    
     this.modify = new Modify({
       source: this.EditLayer.getSource()
     });
 
+    this.EnableEdition = function(e) {
+      this.reset()
+      this.feature = new GeoJSON().readFeatures(e, {
+        featureProjection: 'EPSG:3857'
+      });
+      this.EditLayer.getSource().addFeatures(this.feature);
+      this.map.addInteraction(this.modify);
+    }
+
     this.CancelEdition = function() {
-      this.feature = null
-      this.EditLayer.getSource().clear();
-      this.map.removeInteraction(this.modify);
+      this.reset()
     };
   };
 
-  /*
-  addEditionLayer() {
-    this.map.addLayer(this.EditLayer)
+  reset() {
+    this.feature = null
+    this.EditLayer.getSource().clear();
+    this.map.removeInteraction(this.modify);
   }
-  removeEditionLayer() {
-    this.map.removeLayer(this.EditLayer)
-  }
-  */
 };
 
 export default ModifyFeatures;
