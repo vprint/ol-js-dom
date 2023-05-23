@@ -6,7 +6,6 @@ class EditionWidget extends EditionWidgetDOM {
     constructor({target, map}) {
         super({target, map});
 
-        this.OGC_Feature = null
         // Définition du selecteur de géometrie
         this.FeatureSelector = new SelectFeatures({
             map: map
@@ -22,13 +21,12 @@ class EditionWidget extends EditionWidgetDOM {
         });
 
         // Fonction d'ajout de la fenêtre d'édition
-        this.AddEditionWidget = (e) => {
+        this.AddEditionWidget = () => {
             target.addWidgetElement(this.panneau);
             this.EditGeomButton.disabled = true
-            
             this.defineFormValues({
                 form: this.form,
-                element: e.detail
+                element: this.FeatureSelector.selection.getProperties()
             })
         }
 
@@ -40,14 +38,13 @@ class EditionWidget extends EditionWidgetDOM {
         });
 
         // Ecouteur de selection des géométries OGC
-        window.addEventListener('OGCFeature_Returned', (e) => {
+        window.addEventListener('OGCFeature_Returned', () => {
             this.EditGeomButton.disabled = false
-            this.OGC_Feature = e.detail
         });
 
         this.EditGeomButton.addEventListener('click', () => {
             this.FeatureSelector.RemoveSelectionInteraction();
-            this.ModifyEngine.EnableEdition(this.OGC_Feature)
+            this.ModifyEngine.EnableEdition(this.FeatureSelector.OGCFeature)
         });
         
         // suppression de l'interaction de selection après un clic sur fermer
@@ -64,8 +61,8 @@ class EditionWidget extends EditionWidgetDOM {
     }
 
     /**
-     * Supprime l'interaction de sélection
-     */
+    * Supprime l'interaction de sélection
+    */
     cancelSelectInteraction() {
         this.FeatureSelector.RemoveSelectionInteraction();
         this.EditGeomButton.disabled = true
@@ -74,11 +71,11 @@ class EditionWidget extends EditionWidgetDOM {
     }
 
     /**
-     * Défini les valeurs du formulaire.
-     * 
-     * @param {HTMLElement} form - formulaire en entrée
-     * @param {string} element - Valeurs à appliquer
-     */
+    * Défini les valeurs du formulaire.
+    * 
+    * @param {HTMLElement} form - formulaire en entrée
+    * @param {string} element - Valeurs à appliquer
+    */
     defineFormValues({form, element}) {
         for (let i of form.children) {
             // Gestion des textarea
