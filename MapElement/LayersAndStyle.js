@@ -2,6 +2,8 @@ import TileLayer from 'ol/layer/Tile';
 import XYZ from 'ol/source/XYZ';
 import OSM from 'ol/source/OSM';
 import MVT from 'ol/format/MVT.js';
+import VectorLayer from 'ol/layer/Vector.js';
+import VectorSource from 'ol/source/Vector.js';
 import VectorTileLayer from 'ol/layer/VectorTile.js';
 import VectorTileSource from 'ol/source/VectorTile.js';
 import ApiRequestor from '../Services/ApiRequestor';
@@ -26,6 +28,29 @@ class LayersAndStyle {
             style: cartoFunction
         });
         map.addLayer(this.features);
+
+        // layer de sélection
+        this.selectionLayer = new VectorTileLayer({
+            renderMode: 'vector',
+            source: this.features.getSource(),
+            name: LAYERS_SETTINGS.SELECTION_LAYER.NAME,
+            zIndex: LAYERS_SETTINGS.SELECTION_LAYER.ZINDEX,
+        });
+        map.addLayer(this.selectionLayer)
+
+        this.editionLayer = new VectorLayer({
+            source: new VectorSource(),
+            zIndex: LAYERS_SETTINGS.EDITION_LAYER.ZINDEX,
+            name: LAYERS_SETTINGS.EDITION_LAYER.NAME,
+            style: {
+              'fill-color': 'rgba(255, 255, 255, 0.2)',
+              'stroke-color': '#ffcc33',
+              'stroke-width': 4,
+              'circle-radius': 7,
+              'circle-fill-color': '#ffcc33',
+            },
+        });
+        map.addLayer(this.editionLayer)
 
         // Fond de plan OSM
         this.osmLayer = new TileLayer({
