@@ -1,27 +1,14 @@
-import VectorLayer from 'ol/layer/Vector.js';
-import VectorSource from 'ol/source/Vector.js';
 import { Modify } from 'ol/interaction.js';
 import GeoJSON from 'ol/format/GeoJSON.js';
+import { LAYERS_SETTINGS } from '../../../Miscellaneous/enum';
+import Utils from '../../../Miscellaneous/Utils';
 
 class ModifyFeatures {
   constructor({map}) {
     this.map = map;
     this.feature = null
 
-    this.EditLayer = new VectorLayer({
-      source: new VectorSource({
-        features: this.feature
-      }),
-      zIndex: 3,
-      style: {
-        'fill-color': 'rgba(255, 255, 255, 0.2)',
-        'stroke-color': '#ffcc33',
-        'stroke-width': 2,
-        'circle-radius': 7,
-        'circle-fill-color': '#ffcc33',
-      },
-    });
-    this.map.addLayer(this.EditLayer)
+    this.EditLayer = Utils.getLayerByName(map, LAYERS_SETTINGS.EDITION_LAYER.NAME)
     
     this.modify = new Modify({
       source: this.EditLayer.getSource()

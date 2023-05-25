@@ -2,6 +2,7 @@ import VectorTileLayer from 'ol/layer/VectorTile.js';
 import { FEATURES_SETTINGS, STYLE_SETTINGS, LAYERS_SETTINGS } from "../../../Miscellaneous/enum";
 import Notifier from "../../../Miscellaneous/Notifier";
 import ApiRequestor from "../../../Services/ApiRequestor";
+import Utils from '../../../Miscellaneous/Utils';
 
 class SelectFeatures {
   constructor({ map }) {
@@ -10,20 +11,8 @@ class SelectFeatures {
     this.SelectionState = false;
     this.OGCFeature = null;
 
-    // Ajout de la couche de sélection
-    this.selectionLayer = new VectorTileLayer({
-      map: map,
-      renderMode: 'vector',
-      source: this.getEditionLayer(map, LAYERS_SETTINGS.VECTOR_TILES.NAME).getSource(),
-      style: (feature) => {
-        // La fonction viens récupérer les id présents dans la liste this.selection et styliser uniquement l'id présent dans cette liste.
-        if (this.selection) {
-          if (feature.getId() === this.selection.getId()) {
-            return STYLE_SETTINGS.SELECTED_STYLE;
-          }
-        }
-      },
-    });
+    this.selectionLayer = Utils.getLayerByName(map, LAYERS_SETTINGS.SELECTION_LAYER.NAME)
+    this.selectionLayer.setStyle(this.EditionStyle)
 
     // Evenement de sélection
     this.SelectEvent = new CustomEvent('VectorTileFeatureSelected');
@@ -72,6 +61,16 @@ class SelectFeatures {
     };
   };
 
+  /**
+  * Récupère les ids présents dans la liste this.selection et stylise uniquement la feature correspondante à l'id.
+  */
+  EditionStyle = (feature) => {
+    if (this.selection) {
+      if (feature.getId() === this.selection.getId()) {
+        return LAYERS_SETTINGS.SELECTION_LAYER.STYLE;
+      }
+    }
+  };
 
   /**
   * Défini les valeurs du formulaire.
