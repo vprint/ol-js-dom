@@ -1,5 +1,4 @@
-import VectorTileLayer from 'ol/layer/VectorTile.js';
-import { FEATURES_SETTINGS, STYLE_SETTINGS, LAYERS_SETTINGS } from "../../../Miscellaneous/enum";
+import { FEATURES_SETTINGS, LAYERS_SETTINGS} from "../../../Miscellaneous/enum";
 import Notifier from "../../../Miscellaneous/Notifier";
 import ApiRequestor from "../../../Services/ApiRequestor";
 import Utils from '../../../Miscellaneous/Utils';

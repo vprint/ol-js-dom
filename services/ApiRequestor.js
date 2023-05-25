@@ -1,4 +1,4 @@
-import { CONNECTION_PROPERTIES, API_REQUESTOR, STYLE_SETTINGS, FEATURES_SETTINGS} from '../Miscellaneous/enum';
+import { CONNECTION_PROPERTIES, API_REQUESTOR} from '../Miscellaneous/enum';
 import Notifier from '../Miscellaneous/Notifier';
 
 class ApiRequestor {
@@ -28,7 +28,7 @@ class ApiRequestor {
     */ 
     static async getStyles() {
         const result = await this.getJSON(`${CONNECTION_PROPERTIES.FeatureServer.Functions}carto.get_styles/items`, {
-            errorMsg: STYLE_SETTINGS.FETCH_ERROR
+            errorMsg: API_REQUESTOR.STYLE_ERROR
         })
         return result
     };
@@ -38,7 +38,7 @@ class ApiRequestor {
     */ 
     static async getTypology() {
         const result = await this.getJSON(`${CONNECTION_PROPERTIES.FeatureServer.Functions}carto.get_typology/items`, {
-            errorMsg: FEATURES_SETTINGS.TYPOLOGY.FETCH_ERROR
+            errorMsg: API_REQUESTOR.TYPOLOGY_ERROR
         })
         return result
     };
@@ -49,7 +49,7 @@ class ApiRequestor {
     */ 
     static async getFeatureById(id) {
         const result = await this.getJSON(`${CONNECTION_PROPERTIES.FeatureServer.Collections}carto.td_features/items?id=${id}`, {
-            errorMsg: CONNECTION_PROPERTIES.FeatureServer.Error
+            errorMsg: API_REQUESTOR.SERVER_ERROR
         })
         return result.features[0]
     };
@@ -59,7 +59,7 @@ class ApiRequestor {
     */ 
     static async getFeatureServerStatus() {
         const result = await this.getJSON(CONNECTION_PROPERTIES.FeatureServer.LandingPage, {
-            errorMsg: CONNECTION_PROPERTIES.FeatureServer.Error
+            errorMsg: API_REQUESTOR.SERVER_ERROR
         })
         return !result ? false : true
     };

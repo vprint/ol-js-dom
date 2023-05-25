@@ -1,6 +1,6 @@
 import AddCustomElement from '../../../Miscellaneous/AddCustomElement';
 import ApiRequestor from '../../../Services/ApiRequestor';
-import { FEATURES_SETTINGS } from '../../../Miscellaneous/enum';
+import { API_REQUESTOR, FEATURES_SETTINGS } from '../../../Miscellaneous/enum';
 
 class EditionWidgetDOM {
   constructor({target, map}) {
@@ -57,7 +57,7 @@ class EditionWidgetDOM {
       values: typology,
       indexField: FEATURES_SETTINGS.TYPOLOGY.ID_TYPOLOGY_FIELD,
       valueField: FEATURES_SETTINGS.TYPOLOGY.VALUE_TYPOLOGY_FIELD,
-      error: FEATURES_SETTINGS.TYPOLOGY.FETCH_ERROR
+      error: API_REQUESTOR.TYPOLOGY_ERROR
     })
 
     // Textarea d'observation
