@@ -42,13 +42,8 @@ class LayersAndStyle {
             source: new VectorSource(),
             zIndex: LAYERS_SETTINGS.EDITION_LAYER.ZINDEX,
             name: LAYERS_SETTINGS.EDITION_LAYER.NAME,
-            style: {
-              'fill-color': 'rgba(255, 255, 255, 0.2)',
-              'stroke-color': '#ffcc33',
-              'stroke-width': 4,
-              'circle-radius': 7,
-              'circle-fill-color': '#ffcc33',
-            },
+            style: LAYERS_SETTINGS.EDITION_LAYER.STYLE,
+            visible: LAYERS_SETTINGS.EDITION_LAYER.VISIBLE
         });
         map.addLayer(this.editionLayer)
 

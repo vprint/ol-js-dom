@@ -46,13 +46,16 @@ export const LAYERS_SETTINGS = {
     EDITION_LAYER: {
         ZINDEX: 4,
         NAME: 'Edition',
-        STYLE: {
-            'fill-color': 'rgba(255, 255, 255, 0.2)',
-            'stroke-color': '#ffcc33',
-            'stroke-width': 4,
-            'circle-radius': 7,
-            'circle-fill-color': '#ffcc33',
-        },
+        STYLE: new Style({
+            stroke: new Stroke({
+                color: 'rgba(220,50,225,1)',
+                width: 4
+            }),
+            fill: new Fill({
+                color: 'rgba(220,50,225,0.4)'
+            })
+        }),
+        VISIBLE: false
     },
 };
 
