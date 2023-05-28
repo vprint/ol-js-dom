@@ -1,12 +1,10 @@
 import { Modify } from 'ol/interaction.js';
-import GeoJSON from 'ol/format/GeoJSON.js';
 import { LAYERS_SETTINGS } from '../../../Miscellaneous/enum';
 import Utils from '../../../Miscellaneous/Utils';
 
 class ModifyFeatures {
   constructor({map}) {
     this.map = map;
-    this.feature = null
 
     this.EditLayer = Utils.getLayerByName(map, LAYERS_SETTINGS.EDITION_LAYER.NAME)
     
@@ -15,24 +13,15 @@ class ModifyFeatures {
     });
 
     this.EnableEdition = function(e) {
-      this.reset()
-      this.feature = new GeoJSON().readFeatures(e, {
-        featureProjection: 'EPSG:3857'
-      });
-      this.EditLayer.getSource().addFeatures(this.feature);
       this.map.addInteraction(this.modify);
+      this.EditLayer.setVisible(true);
     }
 
     this.CancelEdition = function() {
-      this.reset()
+      this.map.removeInteraction(this.modify);
+      this.EditLayer.setVisible(false);
     };
   };
-
-  reset() {
-    this.feature = null
-    this.EditLayer.getSource().clear();
-    this.map.removeInteraction(this.modify);
-  }
 };
 
 export default ModifyFeatures;
