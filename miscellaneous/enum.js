@@ -7,7 +7,15 @@ export const CONNECTION_PROPERTIES = {
         Collections:'http://localhost:9000/FeatureServer/collections/',
         Functions:'http://localhost:9000/FeatureServer/functions/',
     },
-    TREX_SERVER: 'http://localhost:6767/'
+    TREX_SERVER: 'http://localhost:6767/',
+    GEOSERVER: {
+        URL: 'http://localhost:8080/geoserver/wfs?',
+        FEATURES: {
+            SERVICE_PREFIX: 'ArchaeoSpringMap',
+            NAME: 'FEATURES'
+        },
+        ERROR: "Le geo-serveur est indisponible. Contactez l'administrateur"
+    }
 };
 
 export const MAP_SETTINGS = {
@@ -83,5 +91,6 @@ export const FEATURES_SETTINGS = {
         VALUE_TYPOLOGY_FIELD: 'typology_name',
         ID_STUDY_AREA: 80
     },
-    OBSERVATION : 'commentaire'
+    OBSERVATION : 'commentaire',
+
 }

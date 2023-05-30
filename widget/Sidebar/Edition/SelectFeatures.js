@@ -17,7 +17,6 @@ class SelectFeatures {
     this.EditLayer = Utils.getLayerByName(map, LAYERS_SETTINGS.EDITION_LAYER.NAME)
     this.selectionLayer.setStyle(this.EditionStyle)
 
-
     // Evenement de sélection
     this.SelectEvent = new CustomEvent('VectorTileFeatureSelected');
     // Evenement de non-sélection
@@ -68,6 +67,10 @@ class SelectFeatures {
     };
   };
 
+  get getFeature() {
+    return this.OGCFeature
+  }
+
   /**
   * Récupère les ids présents dans la liste this.selection et stylise uniquement la feature correspondante à l'id.
   */
@@ -99,6 +102,7 @@ class SelectFeatures {
   * @param {Object} feature - Entité selectionnée
   */
   updateSelection(feature, {alert}) {
+    this.selection = null;
     this.selection = feature;
     this.selectionLayer.changed();
     if (feature == null && alert == true) {
