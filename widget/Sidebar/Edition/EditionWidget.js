@@ -1,5 +1,6 @@
 import ApiRequestor from "../../../Services/ApiRequestor";
 import EditionWidgetDOM from "./EditionWidgetDOM";
+import { Modify } from 'ol/interaction'
 import ModifyFeatures from "./ModifyFeatures";
 import SelectFeatures from './SelectFeatures';
 import Utils from "../../../Miscellaneous/Utils";
@@ -11,21 +12,28 @@ class EditionWidget extends EditionWidgetDOM {
     constructor({target, map}) {
         super({target, map});
         this.map = map
-
-        this.undoInteraction = new UndoRedo();
-        map.addInteraction(this.undoInteraction)
+        this.EditLayer = Utils.getLayerByName(map, LAYERS_SETTINGS.EDITION_LAYER.NAME)
 
         // Définition du selecteur de géometrie
         this.featureSelector = new SelectFeatures({
             map: map
         });
 
-        this.ModifyEngine = new ModifyFeatures({
-            map: map
+        this.ModifyEngine = new Modify({
+            source : this.EditLayer.getSource()
         })
+        map.addInteraction(this.ModifyEngine)
+        this.ModifyEngine.setActive(false)
+
+
+        this.undoInteraction = new UndoRedo({
+            layers: [this.EditLayer]
+        });
+        map.addInteraction(this.undoInteraction)
 
         // Ajout de l'interaction de selection après un clic sur selectionner.
         this.SelectButton.addEventListener('click', () => {
+            this.cancel()
             this.featureSelector.AddSelectionInteraction();
         });
 
@@ -43,7 +51,6 @@ class EditionWidget extends EditionWidgetDOM {
         window.addEventListener('VectorTileFeatureSelected', this.AddEditionWidget);
         window.addEventListener('NoVectorTileFeatureSelected', () => {
             this.panneau.remove()
-            this.ModifyEngine.CancelEdition();
         });
 
         // Ecouteur de selection des géométries OGC
@@ -52,14 +59,10 @@ class EditionWidget extends EditionWidgetDOM {
         });
 
         this.EditGeomButton.addEventListener('click', () => {
-            if (!this.ModifyEngine.ModifyState) {
-                //this.featureSelector.RemoveSelectionInteraction();
-                this.ModifyEngine.EnableEdition()
-                this.activateTools(true)
+            if (!this.ModifyEngine.getActive()) {
+                this.activateToolAndButton(true)
             } else {
-                this.featureSelector.AddSelectionInteraction();
-                this.ModifyEngine.CancelEdition()
-                this.activateTools(false)
+                this.activateToolAndButton(false)
             }
         });
 
@@ -70,14 +73,19 @@ class EditionWidget extends EditionWidgetDOM {
             this.cancelSelectInteraction();
         });
 
-        this.ModifyEngine.modify.on('modifyend', () => {
-            //this.UndoEditButton.disabled = false
-            console.log(this.featureSelector.getFeature)
+        this.ModifyEngine.on('modifyend', () => {
+            const historique = this.undoInteraction.getStack()
+            if (historique[historique.length - 1].type == 'blockstart' && this.UndoEditButton.disabled) {
+                this.UndoEditButton.disabled = false
+            }
         });
 
         this.UndoEditButton.addEventListener('click', () => {
-            console.log((this.undoInteraction.getStack()).slice(-1))
             this.undoInteraction.undo()
+            const historique = this.undoInteraction.getStack()
+            if (historique[historique.length - 1].type == 'addfeature') {
+                this.UndoEditButton.disabled = true
+            }
         });
 
         this.SaveEditButton.addEventListener('click', async () => {
@@ -89,13 +97,13 @@ class EditionWidget extends EditionWidgetDOM {
 
         // suppression de l'interaction de selection après un clic sur fermer
         this.CloseButton.addEventListener('click', () => {
-            this.cancelSelectInteraction()
+            this.cancel()
         })
 
         // Ecouteur d'événement pour la touche "Echap"
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
-                this.cancelSelectInteraction();
+                this.cancel()
             }
         });
     }
@@ -107,14 +115,25 @@ class EditionWidget extends EditionWidgetDOM {
         //this.featureSelector.RemoveSelectionInteraction();
         this.EditGeomButton.disabled = true
         this.panneau.remove();
-        this.ModifyEngine.CancelEdition();
+        this.featureSelector.RemoveSelectionInteraction();
+    }
+
+    cancelModifyInteraction() {
+        this.ModifyEngine.setActive(false);
+        this.EditLayer.setVisible(false)
+    }
+
+    cancel() {
+        this.activateToolAndButton(false)
+        this.cancelSelectInteraction()
+        this.cancelModifyInteraction()
     }
 
     /**
     * Formate et retourne la première entité de la couche d'édition
     */
     getEditedFeature() {
-        const feature = this.featureSelector.EditLayer.getSource().getFeatures()[0];
+        const feature = this.featureSelector.feature;
         const WFSFeature = this.featureToWFS(feature);
         return WFSFeature
     };
@@ -139,8 +158,11 @@ class EditionWidget extends EditionWidgetDOM {
         return feature;
     }
 
-    activateTools(e) {
-        if (e === true) {
+    activateToolAndButton(bool) {
+        if (bool === true) {
+            this.ModifyEngine.setActive(true)
+            this.EditLayer.setVisible(true);
+            this.featureSelector.RemoveSelectionInteraction();
             this.EditGeomButton.textContent = ''
             const icon = document.createElement('i')
             icon.className = 'fas fa-pen'
@@ -150,6 +172,9 @@ class EditionWidget extends EditionWidgetDOM {
             this.EditGeomButton.title = 'Cancel edit'
             this.DropGeomButton.disabled = false
         } else {
+            this.ModifyEngine.setActive(false)
+            this.EditLayer.setVisible(false);
+            this.featureSelector.AddSelectionInteraction();
             this.EditGeomButton.textContent = ''
             const icon = document.createElement('i')
             icon.className = 'fas fa-pen'
@@ -173,7 +198,7 @@ class EditionWidget extends EditionWidgetDOM {
             // Gestion des textarea
             if (i.className == 'input-group') {
                 let textarea = i.querySelector('.form-control')
-                textarea.value = (Object.values(element)[Object.keys(element).indexOf(i.dataset.field_ref)])
+                textarea.value = (Object.values(element)[Object.keys(element).indexOf(i.dataset.field_ref)]) == null ? '' : (Object.values(element)[Object.keys(element).indexOf(i.dataset.field_ref)])
             }
             else {
                 i.value = (Object.values(element)[Object.keys(element).indexOf(i.dataset.field_ref)])

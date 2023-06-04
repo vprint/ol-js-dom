@@ -10,7 +10,7 @@ class SelectFeatures {
     // Liste des éléments sélectionnés
     this.selection = null;
     this.SelectionState = false;
-    this.OGCFeature = null;
+    this.selectedOgcFeature = null;
 
     // Récupération des layers de sélection et d'édition
     this.selectionLayer = Utils.getLayerByName(map, LAYERS_SETTINGS.SELECTION_LAYER.NAME)
@@ -62,14 +62,15 @@ class SelectFeatures {
       if (this.SelectionState) {
         map.un('click', this.SelectElement);
         this.SelectionState = !this.SelectionState;
+        //this.selectedOgcFeature = null
         this.updateSelection(null, {alert: false})
       };
     };
   };
 
-  get getFeature() {
-    return this.OGCFeature
-  }
+  get feature() {
+    return this.selectedOgcFeature[0]
+  };
 
   /**
   * Récupère les ids présents dans la liste this.selection et stylise uniquement la feature correspondante à l'id.
@@ -89,11 +90,11 @@ class SelectFeatures {
   * @returns {Event} - Evenement de sélection
   */
   async get_OGCFeature(id) {
-    this.OGCFeature = await ApiRequestor.getFeatureById(id)
-    const OL_feature = new GeoJSON().readFeatures(this.OGCFeature, {
+    const OGCFeature = await ApiRequestor.getFeatureById(id)
+    this.selectedOgcFeature = new GeoJSON().readFeatures(OGCFeature, {
       featureProjection: 'EPSG:3857'
     });
-    this.EditLayer.getSource().addFeatures(OL_feature);
+    this.EditLayer.getSource().addFeatures(this.selectedOgcFeature);
     window.dispatchEvent(this.OGCFeatureEvent);
   };
 
@@ -117,7 +118,7 @@ class SelectFeatures {
 
   reset() {
     this.selection = null;
-    this.OGCFeature = null
+    this.selectedOgcFeature = null
     this.EditLayer.getSource().clear();
   }
 };
