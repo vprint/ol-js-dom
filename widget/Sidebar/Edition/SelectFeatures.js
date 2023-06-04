@@ -1,38 +1,29 @@
-import VectorTileLayer from 'ol/layer/VectorTile.js';
-import { FEATURES_SETTINGS, STYLE_SETTINGS, LAYERS_SETTINGS } from "../../../Miscellaneous/enum";
+import { FEATURES_SETTINGS, LAYERS_SETTINGS} from "../../../Miscellaneous/enum";
 import Notifier from "../../../Miscellaneous/Notifier";
 import ApiRequestor from "../../../Services/ApiRequestor";
+import Utils from '../../../Miscellaneous/Utils';
+import GeoJSON from 'ol/format/GeoJSON.js';
 
 class SelectFeatures {
   constructor({ map }) {
+
     // Liste des éléments sélectionnés
     this.selection = null;
     this.SelectionState = false;
-    this.OGCFeature = null;
+    this.selectedOgcFeature = null;
 
-    // Ajout de la couche de sélection
-    this.selectionLayer = new VectorTileLayer({
-      map: map,
-      renderMode: 'vector',
-      source: this.getEditionLayer(map, LAYERS_SETTINGS.VECTOR_TILES.NAME).getSource(),
-      style: (feature) => {
-        // La fonction viens récupérer les id présents dans la liste this.selection et styliser uniquement l'id présent dans cette liste.
-        if (this.selection) {
-          if (feature.getId() === this.selection.getId()) {
-            return STYLE_SETTINGS.SELECTED_STYLE;
-          }
-        }
-      },
-    });
+    // Récupération des layers de sélection et d'édition
+    this.selectionLayer = Utils.getLayerByName(map, LAYERS_SETTINGS.SELECTION_LAYER.NAME)
+    this.EditLayer = Utils.getLayerByName(map, LAYERS_SETTINGS.EDITION_LAYER.NAME)
+    this.selectionLayer.setStyle(this.EditionStyle)
 
     // Evenement de sélection
     this.SelectEvent = new CustomEvent('VectorTileFeatureSelected');
-
     // Evenement de non-sélection
     this.UnSelectEvent = new CustomEvent('NoVectorTileFeatureSelected')
-
     // Evenement de sélection d'une entité complète
     this.OGCFeatureEvent = new CustomEvent('OGCFeature_Returned');
+
 
     /**
     * Fonction d'ajout de l'interaction de selection
@@ -41,14 +32,18 @@ class SelectFeatures {
       if (!this.SelectionState) {
         this.SelectionState = !this.SelectionState;
         map.on('click', this.SelectElement = async (e) => {
+          this.reset()
+          
           // Selection des éléments avec une tolérance de 5px
           let features = map.getFeaturesAtPixel(e.pixel, {
             hitTolerance: 5
           });
+          
           // Si aucune feature n'est intersecté ou si il n'y a qu'une feature de type study_area alors rien n'est retourné
           if (!features.length || (features.find(element => element.get(FEATURES_SETTINGS.TYPOLOGY.ID_TYPOLOGY_FIELD) == FEATURES_SETTINGS.TYPOLOGY.ID_STUDY_AREA) && features.length == 1)) {
             this.updateSelection(null, {alert: true})
           }
+          
           else {
             // Recherche du premier élément d'un type différent que study_area
             const feature = features.find(element => element.get(FEATURES_SETTINGS.TYPOLOGY.ID_TYPOLOGY_FIELD) !== FEATURES_SETTINGS.TYPOLOGY.ID_STUDY_AREA);
@@ -67,34 +62,41 @@ class SelectFeatures {
       if (this.SelectionState) {
         map.un('click', this.SelectElement);
         this.SelectionState = !this.SelectionState;
+        //this.selectedOgcFeature = null
         this.updateSelection(null, {alert: false})
       };
     };
   };
 
+  get feature() {
+    return this.selectedOgcFeature[0]
+  };
 
   /**
-  * Défini les valeurs du formulaire.
+  * Récupère les ids présents dans la liste this.selection et stylise uniquement la feature correspondante à l'id.
+  */
+  EditionStyle = (feature) => {
+    if (this.selection) {
+      if (feature.getId() === this.selection.getId()) {
+        return LAYERS_SETTINGS.SELECTION_LAYER.STYLE;
+      }
+    }
+  };
+
+  /**
+  * Requête la géométrie OGC et l'ajoute à la couche d'édition
   * 
   * @param {string} id - Id de la géométrie à selectionner
-  * @returns {Object} - OGC Feature, format GeoJSON
+  * @returns {Event} - Evenement de sélection
   */
   async get_OGCFeature(id) {
-    this.OGCFeature = await ApiRequestor.getFeatureById(id)
+    const OGCFeature = await ApiRequestor.getFeatureById(id)
+    this.selectedOgcFeature = new GeoJSON().readFeatures(OGCFeature, {
+      featureProjection: 'EPSG:3857'
+    });
+    this.EditLayer.getSource().addFeatures(this.selectedOgcFeature);
     window.dispatchEvent(this.OGCFeatureEvent);
   };
-  
-  /**
-  * Cherche le layer d'édition au sein des couches openlayers
-  * 
-  * @param {Object} map - Une carte OpenLayer
-  * @param {Object} layerName - Nom de la couche d'édition
-  * @returns {Object} - Layer d'édition
-  */
-  getEditionLayer(map, layerName) {
-    return map.getLayers().getArray().find(layer => layer.get('name') == layerName)
-  }
-
 
   /**
   * Met à jour la valeur de selection
@@ -112,6 +114,12 @@ class SelectFeatures {
       });
       window.dispatchEvent(this.UnSelectEvent);
     }
+  }
+
+  reset() {
+    this.selection = null;
+    this.selectedOgcFeature = null
+    this.EditLayer.getSource().clear();
   }
 };
 

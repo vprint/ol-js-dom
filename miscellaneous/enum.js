@@ -6,9 +6,16 @@ export const CONNECTION_PROPERTIES = {
         LandingPage: 'http://localhost:9000/FeatureServer/',
         Collections:'http://localhost:9000/FeatureServer/collections/',
         Functions:'http://localhost:9000/FeatureServer/functions/',
-        Error:'Erreur lors de la requête sur le serveur de données'
     },
-    TREX_SERVER: 'http://localhost:6767/'
+    TREX_SERVER: 'http://localhost:6767/',
+    GEOSERVER: {
+        URL: 'http://localhost:8080/geoserver/wfs?',
+        FEATURES: {
+            SERVICE_PREFIX: 'ArchaeoSpringMap',
+            NAME: 'FEATURES'
+        },
+        ERROR: "Le geo-serveur est indisponible. Contactez l'administrateur"
+    }
 };
 
 export const MAP_SETTINGS = {
@@ -30,11 +37,37 @@ export const LAYERS_SETTINGS = {
         ATTRIBUTION: ['Tuiles locales'],
         ZINDEX: 2,
         NAME: 'Features'
-    }
+    },
+    SELECTION_LAYER: {
+        ZINDEX: 3,
+        NAME: 'Selection',
+        STYLE: new Style({
+            stroke: new Stroke({
+                color: 'rgba(220,50,225,1)',
+                width: 2
+            }),
+            fill: new Fill({
+                color: 'rgba(220,50,225,0.4)'
+            })
+        })
+    },
+    EDITION_LAYER: {
+        ZINDEX: 4,
+        NAME: 'Edition',
+        STYLE: new Style({
+            stroke: new Stroke({
+                color: 'rgba(220,50,225,1)',
+                width: 4
+            }),
+            fill: new Fill({
+                color: 'rgba(220,50,225,0.4)'
+            })
+        }),
+        VISIBLE: false
+    },
 };
 
 export const STYLE_SETTINGS = {
-    FETCH_ERROR: 'Erreur lors de la récupération des styles',
     DEFAULT_STYLE: new Style({
         fill: new Fill({
           color: 'rgba(255,255,255,0.4)'
@@ -44,27 +77,20 @@ export const STYLE_SETTINGS = {
           width: 1.25
         }),
     }),
-    SELECTED_STYLE: new Style({
-        stroke: new Stroke({
-            color: 'rgba(220,50,225,1)',
-            width: 2
-        }),
-        fill: new Fill({
-            color: 'rgba(220,50,225,0.4)'
-        })
-    })
 };
 
-
 export const API_REQUESTOR = {
-    ERROR: 'Erreur de requête'
+    ERROR: 'Erreur de requête',
+    STYLE_ERROR: 'Erreur lors de la récupération des styles',
+    TYPOLOGY_ERROR: 'Erreur lors de la récupération des types',
+    SERVER_ERROR: 'Erreur lors de la requête sur le serveur de données'
 }
 export const FEATURES_SETTINGS = {
     TYPOLOGY: {
-        FETCH_ERROR: 'Erreur lors de la récupération des types',
         ID_TYPOLOGY_FIELD: 'id_typology',
         VALUE_TYPOLOGY_FIELD: 'typology_name',
         ID_STUDY_AREA: 80
     },
-    OBSERVATION : 'commentaire'
+    OBSERVATION : 'commentaire',
+
 }
